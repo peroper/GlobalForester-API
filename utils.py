@@ -18,5 +18,5 @@ def get_access_token():
 def configure_swagger_client():
     configuration = swagger_client.Configuration()
     configuration.access_token = get_access_token()
-    configuration.host = "https://api.test.globalforester.com"
+    configuration.host = "https://api.globalforester.com"
     return configuration
