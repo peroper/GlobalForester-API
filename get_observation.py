@@ -13,11 +13,12 @@ args = parser.parse_args()
 project_id = args.project_id
 observation_name = args.observation_name
 
+#Creates an instance of the swagger api
 configuration = utils.configure_swagger_client()
 observations_api = swagger_client.ObservationsApi(swagger_client.ApiClient(configuration))
 
 try:
-    #Creates an instance of the swagger api
+    #Sends request
     observations = observations_api.get_observations(project_id)
 
     #Finds the correct observation by name
@@ -36,16 +37,16 @@ except ApiException as e:
 shape_file_writer = shapefile.Writer(dbf='shapefiles/'+observation_name+'.dbf')
 
 #Adds the fields the shapefile will have. First argument is the fields name, second is the type (C = string).
-shape_file_writer.field('id', 'C')
-shape_file_writer.field('projectId', 'C')
-shape_file_writer.field('name', 'C')
-shape_file_writer.field('comment', 'C')
-shape_file_writer.field('geometryLstChanged', 'C')
-shape_file_writer.field('created', 'C')
-shape_file_writer.field('updated', 'C')
+shapefile_writer.field('id', 'C')
+shapefile_writer.field('projectId', 'C')
+shapefile_writer.field('name', 'C')
+shapefile_writer.field('comment', 'C')
+shapefile_writer.field('geometryLstChanged', 'C')
+shapefile_writer.field('created', 'C')
+shapefile_writer.field('updated', 'C')
 
 #This fills in the information in the first and in this case only record
-shape_file_writer.record(
+shapefile_writer.record(
     id=observation.id,
     projectId=observation.project_id,
     name=observation.name,
@@ -55,4 +56,4 @@ shape_file_writer.record(
     updated=observation.updated
 )
 
-shape_file_writer.close()
+shapefile_writer.close()
