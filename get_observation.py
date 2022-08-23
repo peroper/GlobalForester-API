@@ -33,8 +33,28 @@ try:
 except ApiException as e:
     print("Exception when calling ObservationsApi->get_observations: %s\n" % e)
 
-#Starts a writer for the shapefile. Only the dbf file is written since we do not have the geometry
-shape_file_writer = shapefile.Writer(dbf='shapefiles/'+observation_name+'.dbf')
+print(observation)
+
+#Starts a writer for the shapefile.
+shapefile_writer = shapefile.Writer('shapefiles/'+observation_name)
+
+#Adds the geometry to the shapefile
+if observation.geometry['type']== 'Point':
+    shapefile_writer.shapeType = 1
+    #The writer takes seperate x and y coordinates, the api gives both in a list
+    shapefile_writer.point(observation.geometry['coordinates'][0],
+                           observation.geometry['coordinates'][1])
+elif observation.geometry['type'] == 'LineString':
+    shapefile_writer.shapeType = 3
+    #The writer takes a nested list of coordinate lists. ex [[[x1,y1], [x2, y2]]]
+    #The api gives the coordinates without the outer list so it has to be added.
+    coordinate_list = list()
+    coordinate_list.append(observation.geometry['coordinates'])
+    shapefile_writer.line(coordinate_list)
+elif observation.geometry['type'] == 'Polygon':
+    shapefile_writer.shapeType = 5
+    #The writer takes and the api gives a nested list of coordinate lists. ex [[[x1,y1], [x2, y2]]]
+    shapefile_writer.poly(observation.geometry['coordinates'])
 
 #Adds the fields the shapefile will have. First argument is the fields name, second is the type (C = string).
 shapefile_writer.field('id', 'C')
