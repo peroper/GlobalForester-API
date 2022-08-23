@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **project_id** | **str** |  | [optional] 
 **name** | **str** |  | [optional] 
 **comment** | **str** |  | [optional] 
-**geometry** | [**GeoJSONNetGeometryLineString**](GeoJSONNetGeometryLineString.md) |  | [optional] 
+**geometry** | [**LineString1**](LineString1.md) |  | [optional] 
 **geometry_last_changed** | **datetime** |  | [optional] 
 **created** | **datetime** |  | [optional] 
 **updated** | **datetime** |  | [optional] 

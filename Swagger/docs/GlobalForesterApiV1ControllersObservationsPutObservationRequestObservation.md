@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **project_id** | **str** |  | 
 **name** | **str** |  | 
 **comment** | **str** |  | [optional] 
-**geometry** | [**GeoJSONNetGeometryIGeometryObject**](GeoJSONNetGeometryIGeometryObject.md) |  | 
+**geometry** | **OneOfGlobalForesterApiV1ControllersObservationsPutObservationRequestObservationGeometry** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

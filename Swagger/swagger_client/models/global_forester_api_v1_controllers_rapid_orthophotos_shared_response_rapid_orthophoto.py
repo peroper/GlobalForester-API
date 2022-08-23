@@ -32,7 +32,7 @@ class GlobalForesterApiV1ControllersRapidOrthophotosSharedResponseRapidOrthophot
         'project_id': 'str',
         'name': 'str',
         'comment': 'str',
-        'geometry': 'GeoJSONNetGeometryIGeometryObject',
+        'geometry': 'OneOfGlobalForesterApiV1ControllersRapidOrthophotosSharedResponseRapidOrthophotoGeometry',
         'geometry_last_changed': 'datetime',
         'created': 'datetime',
         'updated': 'datetime',
@@ -172,7 +172,7 @@ class GlobalForesterApiV1ControllersRapidOrthophotosSharedResponseRapidOrthophot
 
 
         :return: The geometry of this GlobalForesterApiV1ControllersRapidOrthophotosSharedResponseRapidOrthophoto.  # noqa: E501
-        :rtype: GeoJSONNetGeometryIGeometryObject
+        :rtype: OneOfGlobalForesterApiV1ControllersRapidOrthophotosSharedResponseRapidOrthophotoGeometry
         """
         return self._geometry
 
@@ -182,7 +182,7 @@ class GlobalForesterApiV1ControllersRapidOrthophotosSharedResponseRapidOrthophot
 
 
         :param geometry: The geometry of this GlobalForesterApiV1ControllersRapidOrthophotosSharedResponseRapidOrthophoto.  # noqa: E501
-        :type: GeoJSONNetGeometryIGeometryObject
+        :type: OneOfGlobalForesterApiV1ControllersRapidOrthophotosSharedResponseRapidOrthophotoGeometry
         """
 
         self._geometry = geometry

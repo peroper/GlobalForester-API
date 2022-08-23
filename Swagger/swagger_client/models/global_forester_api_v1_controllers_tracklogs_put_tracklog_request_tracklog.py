@@ -32,7 +32,7 @@ class GlobalForesterApiV1ControllersTracklogsPutTracklogRequestTracklog(object):
         'project_id': 'str',
         'name': 'str',
         'comment': 'str',
-        'geometry': 'GeoJSONNetGeometryLineString'
+        'geometry': 'LineString'
     }
 
     attribute_map = {
@@ -154,7 +154,7 @@ class GlobalForesterApiV1ControllersTracklogsPutTracklogRequestTracklog(object):
 
 
         :return: The geometry of this GlobalForesterApiV1ControllersTracklogsPutTracklogRequestTracklog.  # noqa: E501
-        :rtype: GeoJSONNetGeometryLineString
+        :rtype: LineString
         """
         return self._geometry
 
@@ -164,7 +164,7 @@ class GlobalForesterApiV1ControllersTracklogsPutTracklogRequestTracklog(object):
 
 
         :param geometry: The geometry of this GlobalForesterApiV1ControllersTracklogsPutTracklogRequestTracklog.  # noqa: E501
-        :type: GeoJSONNetGeometryLineString
+        :type: LineString
         """
         if geometry is None:
             raise ValueError("Invalid value for `geometry`, must not be `None`")  # noqa: E501

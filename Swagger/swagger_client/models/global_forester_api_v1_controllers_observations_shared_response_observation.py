@@ -32,7 +32,7 @@ class GlobalForesterApiV1ControllersObservationsSharedResponseObservation(object
         'project_id': 'str',
         'name': 'str',
         'comment': 'str',
-        'geometry': 'GeoJSONNetGeometryIGeometryObject',
+        'geometry': 'OneOfGlobalForesterApiV1ControllersObservationsSharedResponseObservationGeometry',
         'geometry_last_changed': 'datetime',
         'created': 'datetime',
         'updated': 'datetime',
@@ -172,7 +172,7 @@ class GlobalForesterApiV1ControllersObservationsSharedResponseObservation(object
 
 
         :return: The geometry of this GlobalForesterApiV1ControllersObservationsSharedResponseObservation.  # noqa: E501
-        :rtype: GeoJSONNetGeometryIGeometryObject
+        :rtype: OneOfGlobalForesterApiV1ControllersObservationsSharedResponseObservationGeometry
         """
         return self._geometry
 
@@ -182,7 +182,7 @@ class GlobalForesterApiV1ControllersObservationsSharedResponseObservation(object
 
 
         :param geometry: The geometry of this GlobalForesterApiV1ControllersObservationsSharedResponseObservation.  # noqa: E501
-        :type: GeoJSONNetGeometryIGeometryObject
+        :type: OneOfGlobalForesterApiV1ControllersObservationsSharedResponseObservationGeometry
         """
 
         self._geometry = geometry

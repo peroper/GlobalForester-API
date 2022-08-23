@@ -33,7 +33,7 @@ class GlobalForesterApiV1ControllersManagedAreasSharedResponseManagedArea(object
         'created': 'datetime',
         'updated': 'datetime',
         'name': 'str',
-        'geometry': 'GeoJSONNetGeometryPolygon',
+        'geometry': 'Polygon1',
         'links': 'dict(str, str)'
     }
 
@@ -183,7 +183,7 @@ class GlobalForesterApiV1ControllersManagedAreasSharedResponseManagedArea(object
 
 
         :return: The geometry of this GlobalForesterApiV1ControllersManagedAreasSharedResponseManagedArea.  # noqa: E501
-        :rtype: GeoJSONNetGeometryPolygon
+        :rtype: Polygon1
         """
         return self._geometry
 
@@ -193,7 +193,7 @@ class GlobalForesterApiV1ControllersManagedAreasSharedResponseManagedArea(object
 
 
         :param geometry: The geometry of this GlobalForesterApiV1ControllersManagedAreasSharedResponseManagedArea.  # noqa: E501
-        :type: GeoJSONNetGeometryPolygon
+        :type: Polygon1
         """
 
         self._geometry = geometry

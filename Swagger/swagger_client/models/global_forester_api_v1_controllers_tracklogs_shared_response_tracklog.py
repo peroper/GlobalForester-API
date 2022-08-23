@@ -32,7 +32,7 @@ class GlobalForesterApiV1ControllersTracklogsSharedResponseTracklog(object):
         'project_id': 'str',
         'name': 'str',
         'comment': 'str',
-        'geometry': 'GeoJSONNetGeometryLineString',
+        'geometry': 'LineString1',
         'geometry_last_changed': 'datetime',
         'created': 'datetime',
         'updated': 'datetime',
@@ -172,7 +172,7 @@ class GlobalForesterApiV1ControllersTracklogsSharedResponseTracklog(object):
 
 
         :return: The geometry of this GlobalForesterApiV1ControllersTracklogsSharedResponseTracklog.  # noqa: E501
-        :rtype: GeoJSONNetGeometryLineString
+        :rtype: LineString1
         """
         return self._geometry
 
@@ -182,7 +182,7 @@ class GlobalForesterApiV1ControllersTracklogsSharedResponseTracklog(object):
 
 
         :param geometry: The geometry of this GlobalForesterApiV1ControllersTracklogsSharedResponseTracklog.  # noqa: E501
-        :type: GeoJSONNetGeometryLineString
+        :type: LineString1
         """
 
         self._geometry = geometry

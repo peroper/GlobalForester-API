@@ -32,7 +32,7 @@ class GlobalForesterApiV1ControllersObservationsPutObservationRequestObservation
         'project_id': 'str',
         'name': 'str',
         'comment': 'str',
-        'geometry': 'GeoJSONNetGeometryIGeometryObject'
+        'geometry': 'OneOfGlobalForesterApiV1ControllersObservationsPutObservationRequestObservationGeometry'
     }
 
     attribute_map = {
@@ -154,7 +154,7 @@ class GlobalForesterApiV1ControllersObservationsPutObservationRequestObservation
 
 
         :return: The geometry of this GlobalForesterApiV1ControllersObservationsPutObservationRequestObservation.  # noqa: E501
-        :rtype: GeoJSONNetGeometryIGeometryObject
+        :rtype: OneOfGlobalForesterApiV1ControllersObservationsPutObservationRequestObservationGeometry
         """
         return self._geometry
 
@@ -164,7 +164,7 @@ class GlobalForesterApiV1ControllersObservationsPutObservationRequestObservation
 
 
         :param geometry: The geometry of this GlobalForesterApiV1ControllersObservationsPutObservationRequestObservation.  # noqa: E501
-        :type: GeoJSONNetGeometryIGeometryObject
+        :type: OneOfGlobalForesterApiV1ControllersObservationsPutObservationRequestObservationGeometry
         """
         if geometry is None:
             raise ValueError("Invalid value for `geometry`, must not be `None`")  # noqa: E501

@@ -31,7 +31,7 @@ class GlobalForesterApiV1ControllersManagedAreasPutManagedAreaRequestManagedArea
         'id': 'str',
         'team_id': 'str',
         'name': 'str',
-        'geometry': 'GeoJSONNetGeometryPolygon'
+        'geometry': 'Polygon'
     }
 
     attribute_map = {
@@ -128,7 +128,7 @@ class GlobalForesterApiV1ControllersManagedAreasPutManagedAreaRequestManagedArea
 
 
         :return: The geometry of this GlobalForesterApiV1ControllersManagedAreasPutManagedAreaRequestManagedArea.  # noqa: E501
-        :rtype: GeoJSONNetGeometryPolygon
+        :rtype: Polygon
         """
         return self._geometry
 
@@ -138,7 +138,7 @@ class GlobalForesterApiV1ControllersManagedAreasPutManagedAreaRequestManagedArea
 
 
         :param geometry: The geometry of this GlobalForesterApiV1ControllersManagedAreasPutManagedAreaRequestManagedArea.  # noqa: E501
-        :type: GeoJSONNetGeometryPolygon
+        :type: Polygon
         """
         if geometry is None:
             raise ValueError("Invalid value for `geometry`, must not be `None`")  # noqa: E501

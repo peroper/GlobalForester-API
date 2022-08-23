@@ -30,7 +30,7 @@ class GlobalForesterApiV1ControllersObservationsPostObservationRequestObservatio
     swagger_types = {
         'name': 'str',
         'comment': 'str',
-        'geometry': 'GeoJSONNetGeometryIGeometryObject'
+        'geometry': 'OneOfGlobalForesterApiV1ControllersObservationsPostObservationRequestObservationGeometry'
     }
 
     attribute_map = {
@@ -100,7 +100,7 @@ class GlobalForesterApiV1ControllersObservationsPostObservationRequestObservatio
 
 
         :return: The geometry of this GlobalForesterApiV1ControllersObservationsPostObservationRequestObservation.  # noqa: E501
-        :rtype: GeoJSONNetGeometryIGeometryObject
+        :rtype: OneOfGlobalForesterApiV1ControllersObservationsPostObservationRequestObservationGeometry
         """
         return self._geometry
 
@@ -110,7 +110,7 @@ class GlobalForesterApiV1ControllersObservationsPostObservationRequestObservatio
 
 
         :param geometry: The geometry of this GlobalForesterApiV1ControllersObservationsPostObservationRequestObservation.  # noqa: E501
-        :type: GeoJSONNetGeometryIGeometryObject
+        :type: OneOfGlobalForesterApiV1ControllersObservationsPostObservationRequestObservationGeometry
         """
         if geometry is None:
             raise ValueError("Invalid value for `geometry`, must not be `None`")  # noqa: E501

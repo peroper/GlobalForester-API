@@ -1,11 +1,10 @@
-# GlobalForesterApiV1ControllersObservationsPostObservationRequestObservation
+# Polygon1
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**name** | **str** |  | 
-**comment** | **str** |  | [optional] 
-**geometry** | **OneOfGlobalForesterApiV1ControllersObservationsPostObservationRequestObservationGeometry** |  | 
+**type** | **str** |  | 
+**coordinates** | **list[list[list[float]]]** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

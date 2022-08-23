@@ -1,11 +1,8 @@
-# GlobalForesterApiV1ControllersObservationsPostObservationRequestObservation
+# OneOfGlobalForesterApiV1ControllersObservationsSharedResponseObservationGeometry
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**name** | **str** |  | 
-**comment** | **str** |  | [optional] 
-**geometry** | **OneOfGlobalForesterApiV1ControllersObservationsPostObservationRequestObservationGeometry** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

@@ -182,13 +182,6 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
- - [GeoJSONNetCoordinateReferenceSystemCRSType](docs/GeoJSONNetCoordinateReferenceSystemCRSType.md)
- - [GeoJSONNetCoordinateReferenceSystemICRSObject](docs/GeoJSONNetCoordinateReferenceSystemICRSObject.md)
- - [GeoJSONNetGeoJSONObjectType](docs/GeoJSONNetGeoJSONObjectType.md)
- - [GeoJSONNetGeometryIGeometryObject](docs/GeoJSONNetGeometryIGeometryObject.md)
- - [GeoJSONNetGeometryIPosition](docs/GeoJSONNetGeometryIPosition.md)
- - [GeoJSONNetGeometryLineString](docs/GeoJSONNetGeometryLineString.md)
- - [GeoJSONNetGeometryPolygon](docs/GeoJSONNetGeometryPolygon.md)
  - [GlobalForesterApiV1ControllersManagedAreasPostManagedAreaRequestManagedArea](docs/GlobalForesterApiV1ControllersManagedAreasPostManagedAreaRequestManagedArea.md)
  - [GlobalForesterApiV1ControllersManagedAreasPutManagedAreaRequestManagedArea](docs/GlobalForesterApiV1ControllersManagedAreasPutManagedAreaRequestManagedArea.md)
  - [GlobalForesterApiV1ControllersManagedAreasSharedResponseManagedArea](docs/GlobalForesterApiV1ControllersManagedAreasSharedResponseManagedArea.md)
@@ -207,7 +200,15 @@ Class | Method | HTTP request | Description
  - [GlobalForesterApiV1ControllersTracklogsPostTracklogRequestTracklog](docs/GlobalForesterApiV1ControllersTracklogsPostTracklogRequestTracklog.md)
  - [GlobalForesterApiV1ControllersTracklogsPutTracklogRequestTracklog](docs/GlobalForesterApiV1ControllersTracklogsPutTracklogRequestTracklog.md)
  - [GlobalForesterApiV1ControllersTracklogsSharedResponseTracklog](docs/GlobalForesterApiV1ControllersTracklogsSharedResponseTracklog.md)
+ - [LineString](docs/LineString.md)
+ - [LineString1](docs/LineString1.md)
  - [MicrosoftAspNetCoreMvcProblemDetails](docs/MicrosoftAspNetCoreMvcProblemDetails.md)
+ - [OneOfGlobalForesterApiV1ControllersObservationsPostObservationRequestObservationGeometry](docs/OneOfGlobalForesterApiV1ControllersObservationsPostObservationRequestObservationGeometry.md)
+ - [OneOfGlobalForesterApiV1ControllersObservationsPutObservationRequestObservationGeometry](docs/OneOfGlobalForesterApiV1ControllersObservationsPutObservationRequestObservationGeometry.md)
+ - [OneOfGlobalForesterApiV1ControllersObservationsSharedResponseObservationGeometry](docs/OneOfGlobalForesterApiV1ControllersObservationsSharedResponseObservationGeometry.md)
+ - [OneOfGlobalForesterApiV1ControllersRapidOrthophotosSharedResponseRapidOrthophotoGeometry](docs/OneOfGlobalForesterApiV1ControllersRapidOrthophotosSharedResponseRapidOrthophotoGeometry.md)
+ - [Polygon](docs/Polygon.md)
+ - [Polygon1](docs/Polygon1.md)
 
 ## Documentation For Authorization
 

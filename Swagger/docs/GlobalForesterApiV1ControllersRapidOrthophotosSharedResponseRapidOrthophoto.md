@@ -7,7 +7,7 @@ Name | Type | Description | Notes
 **project_id** | **str** |  | [optional] 
 **name** | **str** |  | [optional] 
 **comment** | **str** |  | [optional] 
-**geometry** | [**GeoJSONNetGeometryIGeometryObject**](GeoJSONNetGeometryIGeometryObject.md) |  | [optional] 
+**geometry** | **OneOfGlobalForesterApiV1ControllersRapidOrthophotosSharedResponseRapidOrthophotoGeometry** |  | [optional] 
 **geometry_last_changed** | **datetime** |  | [optional] 
 **created** | **datetime** |  | [optional] 
 **updated** | **datetime** |  | [optional] 
