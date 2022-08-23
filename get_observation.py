@@ -33,8 +33,6 @@ try:
 except ApiException as e:
     print("Exception when calling ObservationsApi->get_observations: %s\n" % e)
 
-print(observation)
-
 #Starts a writer for the shapefile.
 shapefile_writer = shapefile.Writer('shapefiles/'+observation_name)
 
