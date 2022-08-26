@@ -41,3 +41,12 @@ The virtual environment is activated with: source */path/to/virtual/environment/
   ex. `source venv/bin/activate`
   
 If you want to read more about virtual environments you can do so here: https://docs.python.org/3/library/venv.html
+
+## Running the scripts
+Python scripts are run with: python *name_of_script.py*
+
+Most scripts also have arguments that need to be passed to them. These can be a value or a flag that is set to true if used.
+
+  ex `python get_projects_by_team -t TEAM -f`
+  
+Calling a script with only the flag -h or --help will show the options avaible.
