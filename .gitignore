@@ -67,3 +67,4 @@ target/
 *.txt
 *.json
 shapefiles/*
+Swagger/*
