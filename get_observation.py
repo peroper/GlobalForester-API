@@ -1,3 +1,4 @@
+import os
 import utils
 import shapefile
 import swagger_client
@@ -16,6 +17,7 @@ observation_name = args.observation_name
 #Creates an instance of the swagger api
 configuration = utils.configure_swagger_client()
 observations_api = swagger_client.ObservationsApi(swagger_client.ApiClient(configuration))
+observation_files_api = swagger_client.ObservationFilesApi(swagger_client.ApiClient(configuration))
 
 try:
     #Sends request
@@ -34,7 +36,7 @@ except ApiException as e:
     print("Exception when calling ObservationsApi->get_observations: %s\n" % e)
 
 #Starts a writer for the shapefile.
-shapefile_writer = shapefile.Writer('shapefiles/'+observation_name)
+shapefile_writer = shapefile.Writer(f'shapefiles/{observation_name}')
 
 #Adds the geometry to the shapefile
 if observation.geometry['type']== 'Point':
@@ -42,6 +44,33 @@ if observation.geometry['type']== 'Point':
     #The writer takes seperate x and y coordinates, the api gives both in a list
     shapefile_writer.point(observation.geometry['coordinates'][0],
                            observation.geometry['coordinates'][1])
+
+    #Save images if there are any
+    image_folder = ''
+    try:
+        #Get list of files for observation
+        observation_files = observation_files_api.get_observation_files(observation.id)
+
+        if len(observation_files) > 0:
+            image_folder = f'shapefiles/{observation_name}'
+            if not os.path.exists(image_folder):
+                os.makedirs(image_folder)
+
+            for i, image_file in enumerate(observation_files):
+                try:
+                    #Get image
+                    image_string = observation_files_api.get_image(observation.id, image_file.id)
+                    image = eval(image_string)
+                    #Writes the image to file
+                    with open(image_folder+f'/{i}.jpeg', 'wb') as outfile:
+                        outfile.write(image)
+
+                except ApiException as e:
+                    print("Exception when calling ObservationsFilesApi->get_image: %s\n" % e)
+
+    except ApiException as e:
+        print("Exception when calling ObservationsFilesApi->get_observations_files: %s\n" % e)
+
 elif observation.geometry['type'] == 'LineString':
     shapefile_writer.shapeType = 3
     #The writer takes a nested list of coordinate lists. ex [[[x1,y1], [x2, y2]]]
@@ -62,6 +91,7 @@ shapefile_writer.field('comment', 'C')
 shapefile_writer.field('geometryLstChanged', 'C')
 shapefile_writer.field('created', 'C')
 shapefile_writer.field('updated', 'C')
+shapefile_writer.field('image_folder', 'C')
 
 #This fills in the information in the first and in this case only record
 shapefile_writer.record(
@@ -71,7 +101,8 @@ shapefile_writer.record(
     comment=observation.comment,
     geometryLstChanged=observation.geometry_last_changed,
     created=observation.created,
-    updated=observation.updated
+    updated=observation.updated,
+    image_folder=image_folder
 )
 
 shapefile_writer.close()
