@@ -64,7 +64,6 @@ target/
 .ipynb_checkpoints
 
 # Generated files
-*.txt
 *.json
 teams/*
 shapefiles/*
