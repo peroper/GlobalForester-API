@@ -37,6 +37,7 @@ except ApiException as e:
 
 #Starts a writer for the shapefile.
 shapefile_writer = shapefile.Writer(f'shapefiles/{observation_name}')
+image_folder = ''
 
 #Adds the geometry to the shapefile
 if observation.geometry['type']== 'Point':
@@ -46,7 +47,6 @@ if observation.geometry['type']== 'Point':
                            observation.geometry['coordinates'][1])
 
     #Save images if there are any
-    image_folder = ''
     try:
         #Get list of files for observation
         observation_files = observation_files_api.get_observation_files(observation.id)
@@ -106,3 +106,13 @@ shapefile_writer.record(
 )
 
 shapefile_writer.close()
+
+#This creates a projection file for the shapefile.
+#It is used to make sure the coordinates are read in the right context.
+with open(f'shapefiles/{observation.name}.prj', 'w') as prj:
+    prj.write('''GEOGCS["WGS 84",
+              DATUM["WGS_1984", SPHEROID["WGS 84",6378137,298.257223563]],
+              PRIMEM["Greenwich",0],
+              UNIT["degree",0.0174532925199433,
+                   AUTHORITY["EPSG","9122"]],
+                   AUTHORITY["EPSG","4326"]]''')
