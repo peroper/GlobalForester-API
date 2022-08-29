@@ -35,6 +35,6 @@ Python scripts are run with: python *name_of_script.py*
 
 Most scripts also have arguments that need to be passed to them. These can be a value or a flag that is set to true if used.
 
-  ex `python get_projects_by_team -t TEAM -f`
+  ex `python get_projects_by_team -t TEAM_NAME -f`
   
 Calling a script with only the flag -h or --help will show the options avaible.
