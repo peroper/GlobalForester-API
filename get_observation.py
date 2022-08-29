@@ -108,7 +108,7 @@ shapefile_writer.record(
 shapefile_writer.close()
 
 #This creates a projection file for the shapefile.
-#It is used to make sure the coordinates are read in the right context.
+#It is used to make sure the coordinates are read with the correct reference.
 with open(f'shapefiles/{observation.name}.prj', 'w') as prj:
     prj.write('''GEOGCS["WGS 84",
               DATUM["WGS_1984", SPHEROID["WGS 84",6378137,298.257223563]],
