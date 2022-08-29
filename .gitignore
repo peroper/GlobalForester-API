@@ -66,5 +66,6 @@ target/
 # Generated files
 *.txt
 *.json
+teams/*
 shapefiles/*
 Swagger/*

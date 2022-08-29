@@ -1,3 +1,4 @@
+import os
 import utils
 import argparse
 import swagger_client
@@ -49,7 +50,11 @@ try:
 
     #Write to file
     if save_to_file:
-        file = open(filename, 'w')
+        #Make sure folder exists
+        if not os.path.exists('teams'):
+            os.makedirs('teams')
+
+        file = open('teams/'+filename, 'w')
         file.write(result)
         file.close()
 
