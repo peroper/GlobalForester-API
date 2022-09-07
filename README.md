@@ -1,7 +1,7 @@
-# Global Forester exemple scripts
+# Global Forester Example Scripts
 This project is a collection of scripts, that is to say it is not a single cohesive program. The scripts are a way to interface with the Global Forester API using python and swagger. The project is not meant to be viewed as a complete implementation but rather as inspiration and a jumping off point for other projects. Below how to set up and run the scripts will be explained.
 
-## Generate swagger 
+## Generate Swagger 
 The swagger can be generated with swagger-codegen. https://github.com/swagger-api/swagger-codegen/tree/3.0.0
 The command is: swagger-codegen generate -i *input-spec, (file or web-adress)* -o *output directory* -l *language*
 
@@ -31,7 +31,7 @@ The virtual environment is activated with: source */path/to/virtual/environment/
   
 If you want to read more about virtual environments you can do so here: https://docs.python.org/3/library/venv.html
 
-## Running the scripts
+## Running the Scripts
 Before running the scripts client ID and client secret needs to be given. The variables are found in utils.py.
 
 Python scripts are run with: python *name_of_script.py*
