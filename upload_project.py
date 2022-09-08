@@ -23,9 +23,11 @@ project_file = open(path, 'r')
 project = json.load(project_file)
 
 try:
+    #Creates a new project on the specified team
     request_object = swagger_client.GlobalForesterApiV1ControllersProjectsPostProjectRequestProject(project['name'])
     posted_project = projects_api.post_project(team_id, body = request_object)
 
+    #Creates observations from the json on the new project
     for observation in project['observations']:
         request_object = swagger_client.GlobalForesterApiV1ControllersObservationsPostObservationRequestObservation(
             name = observation['name'],
@@ -37,6 +39,7 @@ try:
         except ApiException as e:
             print(f"For observation {observation['name']}, {observation['id']}. Exception when calling ObservationsApi->post_observations: %s\n" % e)
 
+    #Creates tracklogs from the json on the new project
     for tracklog in project['tracklogs']:
         request_object = swagger_client.GlobalForesterApiV1ControllersTracklogsPostTracklogRequestTracklog(
             name = tracklog['name'],
