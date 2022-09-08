@@ -77,3 +77,10 @@ If the observation contains images they will be placed as jpeg files i a subfold
 
 #### Purpose
 With this script you can upload a shapefile as an observation to an existing project.
+
+### get_orthophotos_for_project
+#### Flags
+-p, --project: The Id for the project that contains the orthophotos.
+
+#### Purpose
+This script downloads all orthophotos on a project. The images are saved as jpeg files under orhtophotos/.
