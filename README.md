@@ -73,7 +73,31 @@ If the observation contains images they will be placed as jpeg files i a subfold
 #### Flags
 -p, --project: The Id for the project that contains the observation.
 
--f, --filepath: The relative path to the shapefile. If the shapefile is located in the default location for download observations the path would look like this: "shapefiles/observation_name"
+-f, --filepath: The relative path to the shapefile. If the shapefile is located in the default location for downloaded observations the path would look like this: "shapefiles/observation_name"
 
 #### Purpose
 With this script you can upload a shapefile as an observation to an existing project.
+
+### download_projects
+#### Flags
+-p, --project: The Id for the project.
+-t, --teamId: The Id of the team the project is in
+-r, --readable: A boolean that determines if the resulting json should be human readable
+
+#### Purpose
+This scripts downloads a project and all observations and tracklogs in that project, and compiles it to a json. The script does not download any images.
+
+### upload_projects
+#### Flags
+-p, --path: Relative path to the json containing the project details.
+-t, --teamId: The Id of the team the project is to be uploaded to
+
+#### Purpose
+With this script you can create new project complete with observations and tracklogs from a json. The json must contain the following variables:
+| Variable name | Type |
+| ----------- | ----------- |
+| name | String |
+| observations | List |
+| tracklogs | List |
+
+The observations and tracklogs lists can be empty. An exemple project can be found under projects/. 
