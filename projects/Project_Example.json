@@ -1,31 +1,20 @@
 {
-    "id": "81101C62-2F56-4060-8B4A-CE95AF02EDBC",
     "name": "Example",
-    "team_id": "36F4CE2A-FFEC-4597-8045-7234F1EC15DC",
-    "created": "2022-09-08T10:48:49.564+00:00",
-    "updated": "2022-09-08T10:48:50+00:00",
     "observations": [
         {
-            "id": "6FCD245E-4CCE-4B89-BDAD-F015B91DEA6B",
             "name": "Point",
             "comment": "This is a point",
-            "created": "2022-09-08T10:52:06.88+00:00",
-            "updated": "2022-09-08T10:52:21.966+00:00",
             "geometry": {
                 "type": "Point",
                 "coordinates": [
                     15.593721061633545,
                     58.400960155848196
                 ]
-            },
-            "geometry_last_changed": "2022-09-08T10:52:06.88+00:00"
+            }
         },
         {
-            "id": "DF62DFAE-4BD2-4D46-8F92-3B68C374A235",
             "name": "Line",
             "comment": "This is a line",
-            "created": "2022-09-08T10:50:24.048+00:00",
-            "updated": "2022-09-08T10:55:23.05+00:00",
             "geometry": {
                 "type": "LineString",
                 "coordinates": [
@@ -70,15 +59,11 @@
                         58.39809839293787
                     ]
                 ]
-            },
-            "geometry_last_changed": "2022-09-08T10:51:28.539+00:00"
+            }
         },
         {
-            "id": "B84BEC18-AE43-4E68-9EA7-641379C7715B",
             "name": "Area",
             "comment": "This is an area",
-            "created": "2022-09-08T10:49:44.896+00:00",
-            "updated": "2022-09-08T10:50:03.38+00:00",
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [
@@ -109,17 +94,13 @@
                         ]
                     ]
                 ]
-            },
-            "geometry_last_changed": "2022-09-08T10:49:44.896+00:00"
+            }
         }
     ],
     "tracklogs": [
         {
-            "id": "6166400F-1054-4FA1-8801-D36F900D9073",
             "name": "Tracklog",
             "comment": "This is a tracklog",
-            "created": "2022-09-08T10:55:36.373+00:00",
-            "updated": "2022-09-08T10:58:34.689+00:00",
             "geometry": {
                 "type": "LineString",
                 "coordinates": [
@@ -180,8 +161,7 @@
                         58.40056485508407
                     ]
                 ]
-            },
-            "geometry_last_changed": "2022-09-08T10:57:18.322+00:00"
+            }
         }
     ]
 }
