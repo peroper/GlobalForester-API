@@ -46,7 +46,6 @@ for orthophoto in orthophoto_list:
                 except ApiException as e:
                     print(f"For rapid orthophoto {orthophoto.name}, {orthophoto.id}. Exception when calling RapidOrthophotoFilesApi->get_rapid_orthophoto_geo_package: %s\n" % e)
             elif file.type == 'originals':
-                print(file.type)
                 try:
                     #Get originals as a bytestring
                     originals_string = rapid_orthophoto_files_api.get_rapid_orthophoto_originals(orthophoto.id, file.id)
