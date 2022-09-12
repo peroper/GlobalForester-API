@@ -6,7 +6,7 @@ from argparse import ArgumentParser
 
 #Parses command line arguments
 parser = ArgumentParser()
-parser.add_argument('-p', '--project', dest='project_id', help='ProjectId for the project that you want to download orthophotos from.')
+parser.add_argument('-p', '--project', dest='project_id', help='ProjectId for the project that you want to download rapid orthophotos from.')
 args = parser.parse_args()
 
 project_id = args.project_id
@@ -17,12 +17,12 @@ rapid_orthophotos_api = swagger_client.RapidOrthophotosApi(swagger_client.ApiCli
 rapid_orthophoto_files_api = swagger_client.RapidOrthophotoFilesApi(swagger_client.ApiClient(configuration))
 
 try:
-    #Get list of orthophotos on project
+    #Get list of rapid orthophotos on project
     orthophoto_list = rapid_orthophotos_api.get_rapid_orthophotos(project_id)
 
     #Make sure folder exists
-    if not os.path.exists('orthophotos'):
-        os.makedirs('orthophotos')
+    if not os.path.exists('rapid_orthophotos'):
+        os.makedirs('rapid_orthophotos')
 except ApiException as e:
     print("Exception when calling RapidOrthophotosApi->get_rapid_orthophotos: %s\n" % e)
 
@@ -41,20 +41,23 @@ for orthophoto in orthophoto_list:
                     geo_package = eval(geo_package_string)
 
                     #Writes the geopackage to file
-                    with open(f'orthophotos/{orthophoto.name}_{orthophoto.id}.gpkg', 'wb') as outfile:
+                    with open(f'rapid_orthophotos/{orthophoto.name}_{orthophoto.id}.gpkg', 'wb') as outfile:
                         outfile.write(geo_package)
                 except ApiException as e:
-                    print(f"For orthophoto {orthophoto.name}, {orthophoto.id}. Exception when calling RapidOrthophotoFilesApi->get_rapid_orthophoto_geo_package: %s\n" % e)
-            else:
+                    print(f"For rapid orthophoto {orthophoto.name}, {orthophoto.id}. Exception when calling RapidOrthophotoFilesApi->get_rapid_orthophoto_geo_package: %s\n" % e)
+            elif file.type == 'originals':
+                print(file.type)
                 try:
                     #Get originals as a bytestring
                     originals_string = rapid_orthophoto_files_api.get_rapid_orthophoto_originals(orthophoto.id, file.id)
                     originals = eval(originals_string)
 
                     #Writes the originals to file
-                    with open(f'orthophotos/{orthophoto.name}_{orthophoto.id}.zip', 'wb') as outfile:
+                    with open(f'rapid_orthophotos/{orthophoto.name}_{orthophoto.id}.zip', 'wb') as outfile:
                         outfile.write(originals)
                 except ApiException as e:
-                    print(f"For orthophoto {orthophoto.name}, {orthophoto.id}. Exception when calling RapidOrthophotoFilesApi->get_rapid_orthophoto_originals: %s\n" % e)
+                    print(f"For rapid orthophoto {orthophoto.name}, {orthophoto.id}. Exception when calling RapidOrthophotoFilesApi->get_rapid_orthophoto_originals: %s\n" % e)
+            else:
+                print(f'Encountered unexpected file type: {file.type}, when processing rapid orthophoto {orthophoto.name}, {orthophoto.id}.')
     except ApiException as e:
-        print(f"For orthophoto {orthophoto.name}, {orthophoto.id}. Exception when calling RapidOrthophotoFilesApi->get_rapid_orthophoto_files: %s\n" % e)
+        print(f"For rapid orthophotos {orthophoto.name}, {orthophoto.id}. Exception when calling RapidOrthophotoFilesApi->get_rapid_orthophoto_files: %s\n" % e)
