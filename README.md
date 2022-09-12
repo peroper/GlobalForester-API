@@ -1,34 +1,34 @@
 # Global Forester Example Scripts
 This project is a collection of scripts, that is to say it is not a single cohesive program. The scripts are a way to interface with the Global Forester API using python and swagger. The project is not meant to be viewed as a complete implementation but rather as inspiration and a jumping off point for other projects. Below how to set up and run the scripts will be explained.
 
-## Generate Swagger 
+## Generate Swagger
 The swagger can be generated with swagger-codegen. https://github.com/swagger-api/swagger-codegen/tree/3.0.0
 The command is: swagger-codegen generate -i *input-spec, (file or web-adress)* -o *output directory* -l *language*
 
   ex. `swagger-codegen generate -i https://api.globalforester.com/swagger/v1/swagger.json -o Swagger -l python`
-  
+
 The scripts assume that the swagger is located in a folder called 'Swagger'.
-  
+
 If you use homebrew, swagger-codegen can be installed with: `brew install swagger-codegen`
 
 Other methods of installation are detailed in the link above.
 
 ## Dependencies
 The scripts are using python3 and should be used with python3. The dependancies can be installed with:
- 
+
  `pip install -r requirements.txt`
- 
-It is recommended to install the dependancies in a virtual environment. 
+
+It is recommended to install the dependancies in a virtual environment.
 This will isolate this project' dependencies from other projects on the same computer.
- 
+
 A virtual environment can be created using python -m venv */path/to/new/virtual/environment*
- 
+
   ex `python -m venv venv`
-  
+
 The virtual environment is activated with: source */path/to/virtual/environment/bin/activate*
-  
+
   ex. `source venv/bin/activate`
-  
+
 If you want to read more about virtual environments you can do so here: https://docs.python.org/3/library/venv.html
 
 ## Running the Scripts
@@ -39,7 +39,7 @@ Python scripts are run with: python *name_of_script.py*
 Most scripts also have arguments that need to be passed to them. These can be a value or a flag that is set to true if used.
 
   ex `python get_projects_by_team -t TEAM_NAME -f`
-  
+
 Calling a script with only the flag -h or --help will show the options avaible.
 
 ## Scripts
@@ -73,10 +73,34 @@ If the observation contains images they will be placed as jpeg files i a subfold
 #### Flags
 -p, --project: The Id for the project that contains the observation.
 
--f, --filepath: The relative path to the shapefile. If the shapefile is located in the default location for download observations the path would look like this: "shapefiles/observation_name"
+-f, --filepath: The relative path to the shapefile. If the shapefile is located in the default location for downloaded observations the path would look like this: "shapefiles/observation_name"
 
 #### Purpose
 With this script you can upload a shapefile as an observation to an existing project.
+
+### download_projects
+#### Flags
+-p, --project: The Id for the project.
+-t, --teamId: The Id of the team the project is in
+-r, --readable: A boolean that determines if the resulting json should be human readable
+
+#### Purpose
+This scripts downloads a project and all observations and tracklogs in that project, and compiles it to a json. The script does not download any images.
+
+### upload_projects
+#### Flags
+-p, --path: Relative path to the json containing the project details.
+-t, --teamId: The Id of the team the project is to be uploaded to
+
+#### Purpose
+With this script you can create new project complete with observations and tracklogs from a json. The json must contain the following variables:
+| Variable name | Type |
+| ----------- | ----------- |
+| name | String |
+| observations | List |
+| tracklogs | List |
+
+The observations and tracklogs lists can be empty. An exemple project can be found under projects/.
 
 ### get_rapid_orthophotos_for_project
 #### Flags
