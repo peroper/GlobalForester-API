@@ -14,6 +14,8 @@ If you use homebrew, swagger-codegen can be installed with: `brew install swagge
 
 Other methods of installation are detailed in the link above.
 
+Once the swagger_client has been generated, move the swagger_client folder to GlobalForester-API.
+
 ## Dependencies
 It is recommended but not necessary to install the dependancies in a virtual environment.
 This will isolate this project' dependencies from other projects on the same computer.
@@ -38,7 +40,7 @@ Python scripts are run with: python3 *name_of_script.py*
 
 Most scripts also have arguments that need to be passed to them. These can be a value or a flag that is set to true if used.
 
-  ex `python3 get_projects_by_team -t TEAM_NAME -f`
+  ex `python3 get_projects_by_team.py -t TEAM_NAME -f`
 
 Calling a script with only the flag -h or --help will show the options avaible.
 
