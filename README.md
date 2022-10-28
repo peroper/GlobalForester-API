@@ -42,24 +42,24 @@ get_projects_by_team is used to get all Projects in a Team, along with IDs for e
 
 #### Flags
 
-- -t or --team, the name of the Team you want to get Projects from
-- -f or --file, use if you want the results to be saved to a file in the _/teams_ subfolder
+- -t or --team, the name of the Team you want to get Projects from.
+- -f or --file, use if you want the results to be saved to a file in the _/teams_ subfolder.
 
 ### get_observation
 
 Downloads an Observation as a shapefile in the _/shapefiles_ subfolder. A shapefile is actually multiple files with the same name but different file endings. The script creates the following files:
 
-- .dbf, contains the Observation data (such as comments)
-- .shp - contains the Observation geometry
-- .prj - contains the reference with which to read the geometry coordinates
-- .shx - a register making reading the other files quicker
+- .dbf, contains the Observation data (such as comments).
+- .shp - contains the Observation geometry.
+- .prj - contains the reference with which to read the geometry coordinates.
+- .shx - a register making reading the other files quicker.
 
 If the Observation contains images they will be placed as jpeg files in a subfolder with the same name as the Observation.
 
 #### Flags
 
-- -p or --project, the ID of the Project that contains the Observation
-- -n or --name, the name of the Observation
+- -p or --project, the ID of the Project that contains the Observation.
+- -n or --name, the name of the Observation.
 
 ### post_observation
 
@@ -67,7 +67,7 @@ Uploads a shapefile as an Observation to an existing Project.
 
 #### Flags
 
-- -p or --project, the ID of the Project that contains the Observation
+- -p or --project, the ID of the Project that contains the Observation.
 - -f or --filepath, the relative path to the shapefile.
 
 > If the shapefile is located in the default location for downloaded Observations the path would look like this: _shapefiles/observation_name_
@@ -78,9 +78,9 @@ Downloads a Project and all Observations and Tracklogs in that Project, and comp
 
 #### Flags
 
-- -p or --project, the ID of the Project
-- -t or --teamId, the ID of the Team the Project is in
-- -r or --readable, use if you want the resulting json in a human-readable format
+- -p or --project, the ID of the Project.
+- -t or --teamId, the ID of the Team the Project is in.
+- -r or --readable, use if you want the resulting json in a human-readable format.
 
 ### upload_projects
 
@@ -95,13 +95,13 @@ The Observations and Tracklogs lists can be empty. An example Project can be fou
 
 #### Flags
 
--p or --path, the relative path to the json containing the Project details
--t or --teamId, the ID of the Team you want to upload your Projects to
+-p or --path, the relative path to the json containing the Project details.
+-t or --teamId, the ID of the Team you want to upload your Projects to.
 
 ### get_rapid_orthophotos_for_project
 
-Downloads all Rapid Orthophotos in a Project. The images are saved as jpeg files under _/rapid_orthophotos_.
+Downloads all Rapid Orthophotos in a Project. The images are saved as jpeg files in the _/rapid_orthophotos_ subfolder.
 
 #### Flags
 
-- -p or --project, the ID of the Project that contains the Rapid Orthophotos
+- -p or --project, the ID of the Project that contains the Rapid Orthophotos.
