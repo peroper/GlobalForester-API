@@ -1,29 +1,63 @@
 # Global Forester API Example Scripts
 
-This repository contains a collection of scripts intended as a starting point for developers looking to utilize the Global Forester API using Swagger. These scripts can be used or combined as-is, or serve as inspiration for more complex implementations. To set up and run the scripts, follow the steps below.
+This repository contains a collection of Python scripts intended as a starting point for developers looking to utilize the Global Forester API using Python and Swagger. These scripts can be used or combined as-is, or serve as inspiration for more complex implementations. To set up and run the scripts, follow the steps below.
+
+See https://api.globalforester.com/swagger for more detailed information about the API.
 
 ## Getting Started
 
-### 1. Generate a Swagger
+### 1. Clone the repo
+```shell
+git clone https://github.com/peroper/GlobalForester-API.git
+cd GlobalForester-API
+```
 
-1. If you use homebrew, install [swagger-codegen](https://github.com/swagger-api/swagger-codegen/tree/3.0.0) with: `brew install swagger-codegen` (other installation methods are detailed [here](https://github.com/swagger-api/swagger-codegen))
-2. cd into _GlobalForester-API_
-3. Generate a swagger with: `swagger-codegen generate -i https://api.globalforester.com/swagger/v1/swagger.json -o Swagger -l python`
+### 2. Install Python 3
+https://www.python.org
 
-> Scripts assume that the swagger is located in a folder called 'Swagger'
-
-### 2. Install Dependencies
+### 3. Install Python Dependencies
 
 It is recommended to install dependencies in a virtual environment. This will isolate project dependencies from other projects on the same computer. If you want to read more about virtual environments you can do so here: https://docs.python.org/3/library/venv.html
 
-1. Create a virtual environment with: `python3 -m venv venv`
-2. Activate the virtual environment with: `source venv/bin/activate`
-3. Install dependencies with `pip3 install -r requirements.txt`
+* Create a virtual environment
+```shell
+python3 -m venv venv
+```
 
-### 3. Run Scripts
+* Activate the virtual environment
+```shell
+source venv/bin/activate
+```
 
-1. Enter your client ID and client secret in _utils.py_. [Contact support](https://www.globalforester.com/manual#errors-and-support) if you don't have a client ID and client secret and API access is included in your Global Forester subscription.
-2. Run any desired script with: `python3 name_of_script.py`
+* Install dependencies
+```shell
+pip3 install -r requirements.txt
+```
+
+### 4. Install swagger-codegen 3
+Via Homebrew:
+```shell
+brew install swagger-codegen
+```
+For other installation methods, see: https://github.com/swagger-api/swagger-codegen/tree/3.0.0
+
+### 5. Generate the API Client
+
+```shell
+swagger-codegen generate -i https://api.globalforester.com/swagger/v1/swagger.json -o Swagger -l python
+```
+
+> Scripts assume that the API Client is located in a folder called 'Swagger'
+
+### 6. Run Scripts
+
+* Enter your client ID and client secret in _utils.py_. Contact support if you don't have a client ID and client secret and API access is included in your Global Forester subscription. https://www.globalforester.com/manual#errors-and-support
+* Run any desired script with
+```shell
+ python3 name_of_script.py
+ ```
+
+ Available scripts:
 
 - [get_projects_by_team.py](#get_projects_by_team)
 - [get_observation.py](#get_observation)
