@@ -19,17 +19,17 @@ https://www.python.org
 
 It is recommended to install dependencies in a virtual environment. This will isolate project dependencies from other projects on the same computer. If you want to read more about virtual environments you can do so here: https://docs.python.org/3/library/venv.html
 
-* Create a virtual environment
+1. Create a virtual environment
 ```shell
 python3 -m venv venv
 ```
 
-* Activate the virtual environment
+2. Activate the virtual environment
 ```shell
 source venv/bin/activate
 ```
 
-* Install dependencies
+3. Install dependencies
 ```shell
 pip3 install -r requirements.txt
 ```
@@ -51,8 +51,8 @@ swagger-codegen generate -i https://api.globalforester.com/swagger/v1/swagger.js
 
 ### 6. Run Scripts
 
-* Enter your client ID and client secret in _utils.py_. Contact support if you don't have a client ID and client secret and API access is included in your Global Forester subscription. https://www.globalforester.com/manual#errors-and-support
-* Run any desired script with
+1. Enter your client ID and client secret in _utils.py_. Contact support if you don't have a client ID and client secret and API access is included in your Global Forester subscription. https://www.globalforester.com/manual#errors-and-support
+2. Run any desired script with:
 ```shell
  python3 name_of_script.py
  ```
