@@ -1,14 +1,14 @@
 # Global Forester API Example Scripts
 
-This repo contains a collection of scripts intended as a starting point for developers looking to utilize the Global Forester API using Swagger. These scripts can be used or combined as-is, or serve as inspiration for more complex implementations. To set up and run the scripts, follow the steps below.
+This repository contains a collection of scripts intended as a starting point for developers looking to utilize the Global Forester API using Swagger. These scripts can be used or combined as-is, or serve as inspiration for more complex implementations. To set up and run the scripts, follow the steps below.
 
 ## Getting Started
 
 ### 1. Generate a Swagger
 
 1. If you use homebrew, install [swagger-codegen](https://github.com/swagger-api/swagger-codegen/tree/3.0.0) with: `brew install swagger-codegen` (other installation methods are detailed [here](https://github.com/swagger-api/swagger-codegen))
-2. Generate a swagger with: `swagger-codegen generate -i https://api.globalforester.com/swagger/v1/swagger.json -o Swagger -l python`
-3. Move the _Swagger/swagger_client_ folder to _GlobalForester-API_.
+2. cd into _GlobalForester-API_
+3. Generate a swagger with: `swagger-codegen generate -i https://api.globalforester.com/swagger/v1/swagger.json -o Swagger -l python`
 
 > Scripts assume that the swagger is located in a folder called 'Swagger'
 
@@ -50,9 +50,9 @@ get_projects_by_team is used to get all Projects in a Team, along with IDs for e
 Downloads an Observation as a shapefile in the _/shapefiles_ subfolder. A shapefile is actually multiple files with the same name but different file endings. The script creates the following files:
 
 - .dbf, contains the Observation data (such as comments).
-- .shp - contains the Observation geometry.
-- .prj - contains the reference with which to read the geometry coordinates.
-- .shx - a register making reading the other files quicker.
+- .shp, contains the Observation geometry.
+- .prj, contains the reference with which to read the geometry coordinates.
+- .shx, a register making reading the other files quicker.
 
 If the Observation contains images they will be placed as jpeg files in a subfolder with the same name as the Observation.
 
@@ -95,8 +95,8 @@ The Observations and Tracklogs lists can be empty. An example Project can be fou
 
 #### Flags
 
--p or --path, the relative path to the json containing the Project details.
--t or --teamId, the ID of the Team you want to upload your Projects to.
+- -p or --path, the relative path to the json containing the Project details.
+- -t or --teamId, the ID of the Team you want to upload your Projects to.
 
 ### get_rapid_orthophotos_for_project
 
