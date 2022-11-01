@@ -51,7 +51,7 @@ swagger-codegen generate -i https://api.globalforester.com/swagger/v1/swagger.js
 
 ### 6. Run Scripts
 
-1. Enter your client ID and client secret in _utils.py_. Contact support if you don't have a client ID and client secret and API access is included in your Global Forester subscription. https://www.globalforester.com/manual#errors-and-support
+1. Enter your client ID and client secret in _utils.py_. [Contact support](https://www.globalforester.com/manual/basics#errors-and-support) if you don't have a client ID and client secret and API access is included in your Global Forester subscription.
 2. Run any desired script with:
 ```shell
  python3 name_of_script.py
