@@ -35,27 +35,43 @@ for orthophoto in orthophoto_list:
         #These are stored in a list in an arbitrary order.
         for file in orthophoto_files:
             if file.type == 'geoPackage':
+                response=None
                 try:
-                    #Get geopackage as a bytestring
-                    geo_package_string = rapid_orthophoto_files_api.get_rapid_orthophoto_geo_package(orthophoto.id, file.id)
-                    geo_package = eval(geo_package_string)
+                    response = rapid_orthophoto_files_api.get_rapid_orthophoto_geo_package(orthophoto.id, file.id, _preload_content=False)
 
-                    #Writes the geopackage to file
+                    #Writes the geopackage to file in chunks
                     with open(f'rapid_orthophotos/{orthophoto.name}_{orthophoto.id}.gpkg', 'wb') as outfile:
-                        outfile.write(geo_package)
-                except ApiException as e:
-                    print(f"For rapid orthophoto {orthophoto.name}, {orthophoto.id}. Exception when calling RapidOrthophotoFilesApi->get_rapid_orthophoto_geo_package: %s\n" % e)
-            elif file.type == 'originals':
-                try:
-                    #Get originals as a bytestring
-                    originals_string = rapid_orthophoto_files_api.get_rapid_orthophoto_originals(orthophoto.id, file.id)
-                    originals = eval(originals_string)
+                      for chunk in response.stream(65536):
+                        outfile.write(chunk)
 
-                    #Writes the originals to file
+                except Exception as e:
+                    print(f"For rapid orthophoto {orthophoto.name}, {orthophoto.id}. Exception when downloading orthophoto: %s\n" % e)
+                finally:
+                    if (response != None):
+                      try:
+                        response.drain_conn()
+                        response.release_conn()
+                      except:
+                        pass
+            elif file.type == 'originals':
+                response=None
+                try:
+                    response = rapid_orthophoto_files_api.get_rapid_orthophoto_originals(orthophoto.id, file.id, _preload_content=False)
+
+                    #Writes the originals to file in chunks
                     with open(f'rapid_orthophotos/{orthophoto.name}_{orthophoto.id}.zip', 'wb') as outfile:
-                        outfile.write(originals)
-                except ApiException as e:
-                    print(f"For rapid orthophoto {orthophoto.name}, {orthophoto.id}. Exception when calling RapidOrthophotoFilesApi->get_rapid_orthophoto_originals: %s\n" % e)
+                      for chunk in response.stream(65536):
+                        outfile.write(chunk)
+
+                except Exception as e:
+                    print(f"For rapid orthophoto {orthophoto.name}, {orthophoto.id}. Exception when downloading originals: %s\n" % e)
+                finally:
+                  if (response != None):
+                    try:
+                      response.drain_conn()
+                      response.release_conn()
+                    except:
+                      pass
             else:
                 print(f'Encountered unexpected file type: {file.type}, when processing rapid orthophoto {orthophoto.name}, {orthophoto.id}.')
     except ApiException as e:
