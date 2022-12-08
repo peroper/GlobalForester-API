@@ -14,11 +14,11 @@ project_id = args.project_id
 #Creates an instance of the swagger api
 configuration = utils.configure_swagger_client()
 rapid_orthophotos_api = swagger_client.RapidOrthophotosApi(swagger_client.ApiClient(configuration))
-rapid_orthophoto_files_api = swagger_client.RapidOrthophotoFilesApi(swagger_client.ApiClient(configuration))
+files_api = swagger_client.FilesApi(swagger_client.ApiClient(configuration))
 
 try:
     #Get list of rapid orthophotos on project
-    orthophoto_list = rapid_orthophotos_api.get_rapid_orthophotos(project_id)
+    orthophoto_list_response = rapid_orthophotos_api.get_rapid_orthophotos(project_id=project_id)
 
     #Make sure folder exists
     if not os.path.exists('rapid_orthophotos'):
@@ -26,10 +26,10 @@ try:
 except ApiException as e:
     print("Exception when calling RapidOrthophotosApi->get_rapid_orthophotos: %s\n" % e)
 
-for orthophoto in orthophoto_list:
+for orthophoto in orthophoto_list_response.results:
     try:
         #Get links to geopackage and originals
-        orthophoto_files = rapid_orthophoto_files_api.get_rapid_orthophoto_files(orthophoto.id)
+        orthophoto_files = files_api.get_files(rapid_orthophoto_id=orthophoto.id)
 
         #orthophoto_files contains two dictionaries. One for the originals and one for the geopackage.
         #These are stored in a list in an arbitrary order.
@@ -37,7 +37,7 @@ for orthophoto in orthophoto_list:
             if file.type == 'geoPackage':
                 response=None
                 try:
-                    response = rapid_orthophoto_files_api.get_rapid_orthophoto_geo_package(orthophoto.id, file.id, _preload_content=False)
+                    response = files_api.get_file(id=file.id, _preload_content=False)
 
                     #Writes the geopackage to file in chunks
                     with open(f'rapid_orthophotos/{orthophoto.name}_{orthophoto.id}.gpkg', 'wb') as outfile:
@@ -56,7 +56,7 @@ for orthophoto in orthophoto_list:
             elif file.type == 'originals':
                 response=None
                 try:
-                    response = rapid_orthophoto_files_api.get_rapid_orthophoto_originals(orthophoto.id, file.id, _preload_content=False)
+                    response = files_api.get_file(id=file.id, _preload_content=False)
 
                     #Writes the originals to file in chunks
                     with open(f'rapid_orthophotos/{orthophoto.name}_{orthophoto.id}.zip', 'wb') as outfile:

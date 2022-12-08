@@ -39,11 +39,11 @@ except ApiException as e:
 #Get projectId
 try:
     #Sends request
-    projects = project_api.get_projects(team.id)
+    projects_response = project_api.get_projects(team_id=team.id)
 
     #Compile project information
     result = f'Team: {team_name}, Id: {team.id}'
-    for p in projects:
+    for p in projects_response.results:
         result += f'\nName: {p.name},  Id: {p.id},  Created: {p.created}'
 
     print(result)

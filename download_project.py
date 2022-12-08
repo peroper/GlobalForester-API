@@ -8,12 +8,10 @@ from swagger_client.rest import ApiException
 #Parses command line arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('-p', '--project', dest='project_id', help='ProjectId for the project that contains the observation.')
-parser.add_argument('-t', '--teamId', dest='team_id', help='Id of team to get project from.')
 parser.add_argument('-r', '--readable', dest='human_readable', help='If the result should be human readable.', action=argparse.BooleanOptionalAction)
 args = parser.parse_args()
 
 project_id = args.project_id
-team_id = args.team_id
 human_readable = args.human_readable
 
 #Creates an instance of the swagger api
@@ -26,7 +24,7 @@ result = {}
 
 #Get and write project
 try:
-    project = projects_api.get_project(team_id, project_id)
+    project = projects_api.get_project(project_id=project_id)
     result['id'] = project.id
     result['name'] = project.name
     result['team_id'] = project.team_id
@@ -37,9 +35,9 @@ except ApiException as e:
 
 #Get and write observations
 try:
-    observations = observations_api.get_observations(project_id)
+    observations_response = observations_api.get_observations(project_id=project_id)
     observations_list = list()
-    for observation in observations:
+    for observation in observations_response.results:
         observations_list.append({
             'id' : observation.id,
             'name' : observation.name,
@@ -55,9 +53,9 @@ except ApiException as e:
 
 #Get and write tracklogs
 try:
-    tracklogs = tracklogs_api.get_tracklogs(project_id)
+    tracklogs_response = tracklogs_api.get_tracklogs(project_id=project_id)
     tracklogs_list = list()
-    for tracklog in tracklogs:
+    for tracklog in tracklogs_response.results:
         tracklogs_list.append({
             'id' : tracklog.id,
             'name' : tracklog.name,

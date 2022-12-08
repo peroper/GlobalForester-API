@@ -24,30 +24,34 @@ with open(path, 'r') as project_file :
 
     try:
         #Creates a new project on the specified team
-        request_object = swagger_client.GlobalForesterApiV1ControllersProjectsPostProjectRequestProject(project['name'])
-        posted_project = projects_api.post_project(team_id, body = request_object)
+        request_object = swagger_client.GlobalForesterApiV2ControllersProjectsPostProjectRequestProject(
+          team_id = team_id,
+          name = project['name'])
+        posted_project = projects_api.post_project(body = request_object)
 
         #Creates observations from the json on the new project
         for observation in project['observations']:
-            request_object = swagger_client.GlobalForesterApiV1ControllersObservationsPostObservationRequestObservation(
+            request_object = swagger_client.GlobalForesterApiV2ControllersObservationsPostObservationRequestObservation(
+                project_id = posted_project.id,
                 name = observation['name'],
                 comment = observation['comment'],
                 geometry = {'type' : observation['geometry']['type'],
                             'coordinates' : observation['geometry']['coordinates']})
             try:
-                observations_api.post_observation(posted_project.id, body = request_object)
+                observations_api.post_observation(body = request_object)
             except ApiException as e:
                 print(f"For observation {observation['name']}, {observation['id']}. Exception when calling ObservationsApi->post_observations: %s\n" % e)
 
         #Creates tracklogs from the json on the new project
         for tracklog in project['tracklogs']:
-            request_object = swagger_client.GlobalForesterApiV1ControllersTracklogsPostTracklogRequestTracklog(
+            request_object = swagger_client.GlobalForesterApiV2ControllersTracklogsPostTracklogRequestTracklog(
+                project_id = posted_project.id,
                 name = tracklog['name'],
                 comment = tracklog['comment'],
                 geometry = {'type' : tracklog['geometry']['type'],
                             'coordinates' : tracklog['geometry']['coordinates']})
             try:
-                tracklogs_api.post_tracklog(posted_project.id, body = request_object)
+                tracklogs_api.post_tracklog(body = request_object)
             except ApiException as e:
                 print(f"For tracklog {tracklog['name']}, {tracklog['id']}. Exception when calling TracklogsApi->post_tracklog: %s\n" % e)
 

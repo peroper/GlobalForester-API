@@ -41,7 +41,8 @@ elif shapefile_reader.shapeType == 5:
     coordinates.append(coordinates_inner)
 
 #Creates the object that serves as the request body
-request_object = swagger_client.GlobalForesterApiV1ControllersObservationsPostObservationRequestObservation(
+request_object = swagger_client.GlobalForesterApiV2ControllersObservationsPostObservationRequestObservation(
+    project_id = project_id,
     name = shapefile_reader.record(0).name,
     comment = shapefile_reader.record(0).comment,
     geometry = {'type' : shape_type,
@@ -49,7 +50,7 @@ request_object = swagger_client.GlobalForesterApiV1ControllersObservationsPostOb
 
 try:
     #Sends request
-    observations = observations_api.post_observation(project_id, body = request_object)
+    observations = observations_api.post_observation(body = request_object)
 
 except ApiException as e:
     print("Exception when calling ObservationsApi->post_observations: %s\n" % e)

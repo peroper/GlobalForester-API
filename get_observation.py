@@ -17,15 +17,15 @@ observation_name = args.observation_name
 #Creates an instance of the swagger api
 configuration = utils.configure_swagger_client()
 observations_api = swagger_client.ObservationsApi(swagger_client.ApiClient(configuration))
-observation_files_api = swagger_client.ObservationFilesApi(swagger_client.ApiClient(configuration))
+files_api = swagger_client.FilesApi(swagger_client.ApiClient(configuration))
 
 try:
     #Sends request
-    observations = observations_api.get_observations(project_id)
+    observations_response = observations_api.get_observations(project_id=project_id)
 
     #Finds the correct observation by name
     observation = ''
-    for o in observations:
+    for o in observations_response.results:
         if o.name == observation_name:
             observation = o
             break
@@ -49,7 +49,7 @@ if observation.geometry['type']== 'Point':
     #Save images if there are any
     try:
         #Get list of files for observation
-        observation_files = observation_files_api.get_observation_files(observation.id)
+        observation_files = files_api.get_files(observation_id=observation.id)
 
         if len(observation_files) > 0:
             image_folder = f'shapefiles/{observation_name}'
@@ -59,7 +59,7 @@ if observation.geometry['type']== 'Point':
             for i, image_file in enumerate(observation_files):
                 try:
                     #Get image
-                    image_string = observation_files_api.get_image(observation.id, image_file.id)
+                    image_string = files_api.get_image(observation.id, image_file.id)
                     image = eval(image_string)
                     #Writes the image to file
                     with open(image_folder+f'/{i}.jpeg', 'wb') as outfile:

@@ -4,6 +4,8 @@ This repository contains a collection of Python scripts intended as a starting p
 
 See https://api.globalforester.com/swagger for more detailed information about the API.
 
+The examples uses [version 2](https://api.globalforester.com/swagger/index.html?urls.primaryName=V2) of the API. Examples for version 1 can be found [here](https://github.com/peroper/GlobalForester-API/tree/1.0)
+
 ## Getting Started
 
 ### 1. Clone the repo
@@ -44,7 +46,7 @@ For other installation methods, see: https://github.com/swagger-api/swagger-code
 ### 5. Generate the API Client
 
 ```shell
-swagger-codegen generate -i https://api.globalforester.com/swagger/v1/swagger.json -o Swagger -l python
+swagger-codegen generate -i https://api.globalforester.com/swagger/v2/swagger.json -o Swagger -l python
 ```
 
 > Scripts assume that the API Client is located in a folder called 'Swagger'
@@ -65,6 +67,7 @@ swagger-codegen generate -i https://api.globalforester.com/swagger/v1/swagger.js
 - [download_projects](#download_projects)
 - [upload_projects](#upload_projects)
 - [get_rapid_orthophotos_for_project](#get_rapid_orthophotos_for_project)
+- [get_recent_rapid_orthophotos](#get_recent_rapid_orthophotos)
 
 > Most scripts also have arguments that need to be passed to them. These can be a value or a flag that is set to true if used. Running a script with only the -h or --help flag will show the options available.
 
@@ -113,7 +116,6 @@ Downloads a Project and all Observations and Tracklogs in that Project, and comp
 #### Flags
 
 - -p or --project, the ID of the Project.
-- -t or --teamId, the ID of the Team the Project is in.
 - -r or --readable, use if you want the resulting json in a human-readable format.
 
 ### upload_projects
@@ -139,3 +141,11 @@ Downloads all Rapid Orthophotos in a Project. The images are saved as jpeg files
 #### Flags
 
 - -p or --project, the ID of the Project that contains the Rapid Orthophotos.
+
+### get_recent_rapid_orthophotos
+
+Lists all Rapid Orthophotos updated after the point in time given as input. Without input, orthophotos one week back in time are fetched.
+
+#### Flags
+
+- -u or --updated_after, a point in time in UTC timezone, for example 2022-12-24T14:00:00Z
