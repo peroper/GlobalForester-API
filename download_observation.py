@@ -1,14 +1,21 @@
+"""Downloads an Observation as a shapefile
+
+The shapefile is saved in the folder 'shapefiles' from where the script is running .
+
+If the Observation contains images they will be placed as jpeg files in a subfolder with the same name as the Observation.
+"""
+
 import os
 import utils
 import shapefile
 import swagger_client
 from swagger_client.rest import ApiException
-from argparse import ArgumentParser
+import argparse
 
 #Parses command line arguments
-parser = ArgumentParser()
-parser.add_argument('-p', '--project', dest='project_id', help='ProjectId for the project that contains the observation.')
-parser.add_argument('-n', '--name', dest='observation_name', help='Name of the observation.')
+parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+parser.add_argument('-p', '--project', dest='project_id', help='ProjectId for the project that contains the observation.', required=True)
+parser.add_argument('-n', '--name', dest='observation_name', help='Name of the observation to download. First observation with this name is downloaded', required=True)
 args = parser.parse_args()
 
 project_id = args.project_id
@@ -17,15 +24,15 @@ observation_name = args.observation_name
 #Creates an instance of the swagger api
 configuration = utils.configure_swagger_client()
 observations_api = swagger_client.ObservationsApi(swagger_client.ApiClient(configuration))
-observation_files_api = swagger_client.ObservationFilesApi(swagger_client.ApiClient(configuration))
+files_api = swagger_client.FilesApi(swagger_client.ApiClient(configuration))
 
 try:
     #Sends request
-    observations = observations_api.get_observations(project_id)
+    observations_response = observations_api.get_observations(project_id=project_id)
 
     #Finds the correct observation by name
     observation = ''
-    for o in observations:
+    for o in observations_response.results:
         if o.name == observation_name:
             observation = o
             break
@@ -49,7 +56,7 @@ if observation.geometry['type']== 'Point':
     #Save images if there are any
     try:
         #Get list of files for observation
-        observation_files = observation_files_api.get_observation_files(observation.id)
+        observation_files = files_api.get_files(observation_id=observation.id)
 
         if len(observation_files) > 0:
             image_folder = f'shapefiles/{observation_name}'
@@ -57,16 +64,25 @@ if observation.geometry['type']== 'Point':
                 os.makedirs(image_folder)
 
             for i, image_file in enumerate(observation_files):
+                response = None
                 try:
-                    #Get image
-                    image_string = observation_files_api.get_image(observation.id, image_file.id)
-                    image = eval(image_string)
-                    #Writes the image to file
-                    with open(image_folder+f'/{i}.jpeg', 'wb') as outfile:
-                        outfile.write(image)
+                    #Download image
+                    response = files_api.get_file(id=image_file.id, _preload_content=False)
 
-                except ApiException as e:
+                    #Writes the image to file in chunks
+                    with open(image_folder+f'/{i}.jpeg', 'wb') as outfile:
+                      for chunk in response.stream(65536):
+                        outfile.write(chunk)
+
+                except Exception as e:
                     print("Exception when calling ObservationsFilesApi->get_image: %s\n" % e)
+                finally:
+                  if (response != None):
+                    try:
+                      response.drain_conn()
+                      response.release_conn()
+                    except:
+                      pass
 
     except ApiException as e:
         print("Exception when calling ObservationsFilesApi->get_observations_files: %s\n" % e)

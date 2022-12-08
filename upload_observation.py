@@ -1,13 +1,15 @@
+"""Uploads a shapefile as an Observation to an existing Project"""
+
 import utils
 import shapefile
 import swagger_client
 from swagger_client.rest import ApiException
-from argparse import ArgumentParser
+import argparse
 
 #Parses command line arguments
-parser = ArgumentParser()
-parser.add_argument('-p', '--project', dest='project_id', help='ProjectId for the project that you want to upload the observation to.')
-parser.add_argument('-f', '--filepath', dest='file_path', help='Path to the shapefile.')
+parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+parser.add_argument('-p', '--project', dest='project_id', help='ProjectId for the project that you want to upload the observation to.', required=True)
+parser.add_argument('-f', '--filepath', dest='file_path', help='Path to the shapefile. If the shapefile is located in the default location for downloaded Observations the path would look like this: "shapefiles/observation_name"', required=True)
 args = parser.parse_args()
 
 project_id = args.project_id
@@ -41,7 +43,8 @@ elif shapefile_reader.shapeType == 5:
     coordinates.append(coordinates_inner)
 
 #Creates the object that serves as the request body
-request_object = swagger_client.GlobalForesterApiV1ControllersObservationsPostObservationRequestObservation(
+request_object = swagger_client.GlobalForesterApiV2ControllersObservationsPostObservationRequestObservation(
+    project_id = project_id,
     name = shapefile_reader.record(0).name,
     comment = shapefile_reader.record(0).comment,
     geometry = {'type' : shape_type,
@@ -49,7 +52,7 @@ request_object = swagger_client.GlobalForesterApiV1ControllersObservationsPostOb
 
 try:
     #Sends request
-    observations = observations_api.post_observation(project_id, body = request_object)
+    observations = observations_api.post_observation(body = request_object)
 
 except ApiException as e:
     print("Exception when calling ObservationsApi->post_observations: %s\n" % e)

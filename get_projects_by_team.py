@@ -1,3 +1,8 @@
+"""Retrieves a list of all Projects in a Team.
+
+The result is printed to standard output. It can also be written to a file in the 'teams' folder
+"""
+
 import os
 import utils
 import argparse
@@ -5,8 +10,8 @@ import swagger_client
 from swagger_client.rest import ApiException
 
 #Parses command line arguments
-parser = argparse.ArgumentParser()
-parser.add_argument('-t', '--team', dest='team', help='Name of team to get projects from.')
+parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+parser.add_argument('-t', '--team', dest='team', help='Name of team to get projects from.', required=True)
 parser.add_argument('-f', '--file', dest='file', help='If the result should be saved to file.', action=argparse.BooleanOptionalAction)
 args = parser.parse_args()
 
@@ -39,11 +44,11 @@ except ApiException as e:
 #Get projectId
 try:
     #Sends request
-    projects = project_api.get_projects(team.id)
+    projects_response = project_api.get_projects(team_id=team.id)
 
     #Compile project information
     result = f'Team: {team_name}, Id: {team.id}'
-    for p in projects:
+    for p in projects_response.results:
         result += f'\nName: {p.name},  Id: {p.id},  Created: {p.created}'
 
     print(result)
