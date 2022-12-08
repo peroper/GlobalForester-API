@@ -1,11 +1,18 @@
+"""Lists all Rapid Orthophotos updated after the point in time given as input.
+
+Without input, orthophotos one week back in time are fetched.
+
+The result is printed to standard output.
+"""
+
 import utils
 from datetime import datetime, timedelta
 import swagger_client
-from argparse import ArgumentParser
+import argparse
 
 #Parses command line arguments
-parser = ArgumentParser()
-parser.add_argument('-u', '--updated_after', dest='updated_after', help='Find rapid orthophotos created after date.')
+parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+parser.add_argument('-u', '--updated_after', dest='updated_after', help='A point in time in UTC timezone, for example 2022-12-24T14:00:00Z')
 args = parser.parse_args()
 
 selected_updated_after = args.updated_after

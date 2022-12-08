@@ -1,3 +1,10 @@
+"""Retrieves a Project and all Observations and Tracklogs in that Project.
+
+It is saved as a json in the 'projects' folder
+
+The script does not download any images.
+"""
+
 import os
 import json
 import utils
@@ -6,9 +13,9 @@ import swagger_client
 from swagger_client.rest import ApiException
 
 #Parses command line arguments
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
 parser.add_argument('-p', '--project', dest='project_id', help='ProjectId for the project that contains the observation.')
-parser.add_argument('-r', '--readable', dest='human_readable', help='If the result should be human readable.', action=argparse.BooleanOptionalAction)
+parser.add_argument('-r', '--readable', dest='human_readable', help='If the result should be human readable. Default is condensed json', action=argparse.BooleanOptionalAction)
 args = parser.parse_args()
 
 project_id = args.project_id

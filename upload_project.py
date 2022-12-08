@@ -1,3 +1,13 @@
+"""Creates a new Project from a json.
+
+The json must contain the following properties:
+- name: the name of the project
+- observations: a list with observations (can be an empty list)
+- tracklogs: a list with tracklogs (can be an empty list)
+
+An example Project can be found in the 'projects' folder.
+"""
+
 import json
 import utils
 import argparse
@@ -5,9 +15,9 @@ import swagger_client
 from swagger_client.rest import ApiException
 
 #Parses command line arguments
-parser = argparse.ArgumentParser()
-parser.add_argument('-p', '--path', dest='path', help='Relative path to the json containing the project details.')
-parser.add_argument('-t', '--teamId', dest='team_id', help='Id of team to upload project to.')
+parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+parser.add_argument('-p', '--path', dest='path', help='Relative path to the json containing the project details.', required=True)
+parser.add_argument('-t', '--teamId', dest='team_id', help='Id of team to upload project to.', required=True)
 args = parser.parse_args()
 
 path = args.path

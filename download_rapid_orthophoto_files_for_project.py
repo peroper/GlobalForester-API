@@ -1,12 +1,21 @@
+"""Downloads all Rapid Orthophoto files in a Project.
+
+For each Rapid Orthophoto two files are downloaded:
+- Originals: A zip file with the original images
+- GeoPackage: A Geopackage with the map tiles
+
+The downloaded files are stored in 'rapid_orthophotos'-folder
+"""
+
 import os
 import utils
 import swagger_client
 from swagger_client.rest import ApiException
-from argparse import ArgumentParser
+import argparse
 
 #Parses command line arguments
-parser = ArgumentParser()
-parser.add_argument('-p', '--project', dest='project_id', help='ProjectId for the project that you want to download rapid orthophotos from.')
+parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+parser.add_argument('-p', '--project', dest='project_id', help='ProjectId for the project that you want to download rapid orthophotos from.', required=True)
 args = parser.parse_args()
 
 project_id = args.project_id
@@ -27,6 +36,7 @@ except ApiException as e:
     print("Exception when calling RapidOrthophotosApi->get_rapid_orthophotos: %s\n" % e)
 
 for orthophoto in orthophoto_list_response.results:
+    print("Downloading files for orthophoto:", orthophoto.name)
     try:
         #Get links to geopackage and originals
         orthophoto_files = files_api.get_files(rapid_orthophoto_id=orthophoto.id)
