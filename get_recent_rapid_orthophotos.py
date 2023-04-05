@@ -32,10 +32,11 @@ fetch_data = True
 try:
     while(fetch_data):
       #Get list of rapid orthophotos after point in time
+      print("Fetching orthophotos after: %s" % updated_after)
       orthophoto_response = rapid_orthophotos_api.get_rapid_orthophotos(updated_after=updated_after)
 
       for ortophoto in orthophoto_response.results:
-          result += f'Name: {ortophoto.name},  Id: {ortophoto.id},  Created: {ortophoto.created},  Updated: {ortophoto.updated}\n'
+          result += f'Name: {ortophoto.name},  Id: {ortophoto.id},  Created: {ortophoto.created},  Updated: {ortophoto.updated},  Project: {ortophoto.project_id} \n'
 
       #If there is more orthophotos available, is_truncated in metadata is set to true
       fetch_data = orthophoto_response.metadata.is_truncated
@@ -44,4 +45,5 @@ try:
 except Exception as e:
     print("Exception when calling RapidOrthophotosApi->get_rapid_orthophotos: %s\n" % e)
 
+print("\nResults: \n")
 print(result)

@@ -39,11 +39,11 @@ for orthophoto in orthophoto_list_response.results:
     print("Downloading files for orthophoto:", orthophoto.name)
     try:
         #Get links to geopackage and originals
-        orthophoto_files = files_api.get_files(rapid_orthophoto_id=orthophoto.id)
+        orthophoto_files_response = files_api.get_files(rapid_orthophoto_id=orthophoto.id)
 
         #orthophoto_files contains two dictionaries. One for the originals and one for the geopackage.
         #These are stored in a list in an arbitrary order.
-        for file in orthophoto_files:
+        for file in orthophoto_files_response.results:
             if file.type == 'geoPackage':
                 response=None
                 try:

@@ -14,7 +14,7 @@ from swagger_client.rest import ApiException
 
 #Parses command line arguments
 parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-parser.add_argument('-p', '--project', dest='project_id', help='ProjectId for the project that contains the observation.')
+parser.add_argument('-p', '--project', dest='project_id', help='ProjectId for the project that contains the observation.', required=True)
 parser.add_argument('-r', '--readable', dest='human_readable', help='If the result should be human readable. Default is condensed json', action=argparse.BooleanOptionalAction)
 args = parser.parse_args()
 

@@ -54,7 +54,7 @@ For other installation methods, see: <https://github.com/swagger-api/swagger-cod
 ### 5. Generate the API Client
 
 ```shell
-swagger-codegen generate -i https://api.globalforester.com/swagger/v2/swagger.json -o Swagger -l python
+swagger-codegen generate -i https://api.globalforester.com/swagger/v3/swagger.json -o Swagger -l python
 ```
 
 > Scripts assume that the API Client is located in a folder called 'Swagger'

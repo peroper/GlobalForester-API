@@ -27,11 +27,11 @@ project_api = swagger_client.ProjectsApi(swagger_client.ApiClient(configuration)
 #Get team
 try:
     #Sends request
-    teams = teams_api.get_teams()
+    teams_response = teams_api.get_teams()
 
     #Finds the correct team by name
     team = ''
-    for t in teams:
+    for t in teams_response.results:
         if t.name == team_name:
             team = t
             break
