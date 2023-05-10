@@ -4,7 +4,9 @@ This repository contains a collection of Python scripts intended as a starting p
 
 See <https://api.globalforester.com/swagger> for more detailed information about the API.
 
-The examples uses [version 2](https://api.globalforester.com/swagger/index.html?urls.primaryName=V2) of the API. Examples for version 1 can be found [here](https://github.com/peroper/GlobalForester-API/tree/1.0)
+The examples uses [version 3](https://api.globalforester.com/swagger/index.html?urls.primaryName=V3) of the API, which is the recommended version.
+
+Examples for [version 2](https://api.globalforester.com/swagger/index.html?urls.primaryName=V2) of the API can be found [here](https://github.com/peroper/GlobalForester-API/tree/2.0). Note that version 2 only supports fetching data. Version 1 of the API has ceased to be and is now history.
 
 ## Getting Started
 
@@ -54,7 +56,7 @@ For other installation methods, see: <https://github.com/swagger-api/swagger-cod
 ### 5. Generate the API Client
 
 ```shell
-swagger-codegen generate -i https://api.globalforester.com/swagger/v2/swagger.json -o Swagger -l python
+swagger-codegen generate -i https://api.globalforester.com/swagger/v3/swagger.json -o Swagger -l python
 ```
 
 > Scripts assume that the API Client is located in a folder called 'Swagger'

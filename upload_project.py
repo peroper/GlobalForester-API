@@ -34,14 +34,14 @@ with open(path, 'r') as project_file :
 
     try:
         #Creates a new project on the specified team
-        request_object = swagger_client.GlobalForesterApiV2ControllersProjectsPostProjectRequestProject(
+        request_object = swagger_client.GlobalForesterApiV3ControllersProjectsPostProjectRequestProject(
           team_id = team_id,
           name = project['name'])
         posted_project = projects_api.post_project(body = request_object)
 
         #Creates observations from the json on the new project
         for observation in project['observations']:
-            request_object = swagger_client.GlobalForesterApiV2ControllersObservationsPostObservationRequestObservation(
+            request_object = swagger_client.GlobalForesterApiV3ControllersObservationsPostObservationRequestObservation(
                 project_id = posted_project.id,
                 name = observation['name'],
                 comment = observation['comment'],
@@ -54,7 +54,7 @@ with open(path, 'r') as project_file :
 
         #Creates tracklogs from the json on the new project
         for tracklog in project['tracklogs']:
-            request_object = swagger_client.GlobalForesterApiV2ControllersTracklogsPostTracklogRequestTracklog(
+            request_object = swagger_client.GlobalForesterApiV3ControllersTracklogsPostTracklogRequestTracklog(
                 project_id = posted_project.id,
                 name = tracklog['name'],
                 comment = tracklog['comment'],

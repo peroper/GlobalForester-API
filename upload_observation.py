@@ -43,7 +43,7 @@ elif shapefile_reader.shapeType == 5:
     coordinates.append(coordinates_inner)
 
 #Creates the object that serves as the request body
-request_object = swagger_client.GlobalForesterApiV2ControllersObservationsPostObservationRequestObservation(
+request_object = swagger_client.GlobalForesterApiV3ControllersObservationsPostObservationRequestObservation(
     project_id = project_id,
     name = shapefile_reader.record(0).name,
     comment = shapefile_reader.record(0).comment,

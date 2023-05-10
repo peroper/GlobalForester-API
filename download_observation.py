@@ -56,7 +56,8 @@ if observation.geometry['type']== 'Point':
     #Save images if there are any
     try:
         #Get list of files for observation
-        observation_files = files_api.get_files(observation_id=observation.id)
+        observation_files_response = files_api.get_files(observation_id=observation.id)
+        observation_files  = observation_files_response.results
 
         if len(observation_files) > 0:
             image_folder = f'shapefiles/{observation_name}'
