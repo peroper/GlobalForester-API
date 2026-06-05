@@ -1,4 +1,4 @@
-"""Retrieves a Project and all Observations and Tracklogs in that Project.
+"""Retrieves a Project and all Tracklogs in that Project.
 
 It is saved as a json in the 'projects' folder
 
@@ -14,7 +14,7 @@ from swagger_client.rest import ApiException
 
 #Parses command line arguments
 parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-parser.add_argument('-p', '--project', dest='project_id', help='ProjectId for the project that contains the observation.', required=True)
+parser.add_argument('-p', '--project', dest='project_id', help='ProjectId for the project to retrieve.', required=True)
 parser.add_argument('-r', '--readable', dest='human_readable', help='If the result should be human readable. Default is condensed json', action=argparse.BooleanOptionalAction)
 args = parser.parse_args()
 
@@ -24,7 +24,6 @@ human_readable = args.human_readable
 #Creates an instance of the swagger api
 configuration = utils.configure_swagger_client()
 projects_api = swagger_client.ProjectsApi(swagger_client.ApiClient(configuration))
-observations_api = swagger_client.ObservationsApi(swagger_client.ApiClient(configuration))
 tracklogs_api = swagger_client.TracklogsApi(swagger_client.ApiClient(configuration))
 
 result = {}
@@ -39,24 +38,6 @@ try:
     result['updated'] = project.updated
 except ApiException as e:
     print("Exception when calling ProjectsApi->get_project: %s\n" % e)
-
-#Get and write observations
-try:
-    observations_response = observations_api.get_observations(project_id=project_id)
-    observations_list = list()
-    for observation in observations_response.results:
-        observations_list.append({
-            'id' : observation.id,
-            'name' : observation.name,
-            'comment' : observation.comment,
-            'created' : observation.created,
-            'updated' : observation.updated,
-            'geometry' : observation.geometry,
-            'geometry_last_changed' : observation.geometry_last_changed
-            })
-    result['observations'] = observations_list
-except ApiException as e:
-    print("Exception when calling ObservationsApi->get_observations: %s\n" % e)
 
 #Get and write tracklogs
 try:
