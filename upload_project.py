@@ -2,7 +2,6 @@
 
 The json must contain the following properties:
 - name: the name of the project
-- observations: a list with observations (can be an empty list)
 - tracklogs: a list with tracklogs (can be an empty list)
 
 An example Project can be found in the 'projects' folder.
@@ -26,7 +25,6 @@ team_id = args.team_id
 #Creates an instance of the swagger api
 configuration = utils.configure_swagger_client()
 projects_api = swagger_client.ProjectsApi(swagger_client.ApiClient(configuration))
-observations_api = swagger_client.ObservationsApi(swagger_client.ApiClient(configuration))
 tracklogs_api = swagger_client.TracklogsApi(swagger_client.ApiClient(configuration))
 
 with open(path, 'r') as project_file :
@@ -38,19 +36,6 @@ with open(path, 'r') as project_file :
           team_id = team_id,
           name = project['name'])
         posted_project = projects_api.post_project(body = request_object)
-
-        #Creates observations from the json on the new project
-        for observation in project['observations']:
-            request_object = swagger_client.GlobalForesterApiV3ControllersObservationsPostObservationRequestObservation(
-                project_id = posted_project.id,
-                name = observation['name'],
-                comment = observation['comment'],
-                geometry = {'type' : observation['geometry']['type'],
-                            'coordinates' : observation['geometry']['coordinates']})
-            try:
-                observations_api.post_observation(body = request_object)
-            except ApiException as e:
-                print(f"For observation {observation['name']}, {observation['id']}. Exception when calling ObservationsApi->post_observations: %s\n" % e)
 
         #Creates tracklogs from the json on the new project
         for tracklog in project['tracklogs']:
