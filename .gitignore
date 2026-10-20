@@ -70,5 +70,5 @@ shapefiles/*
 rapid_orthophotos/*
 forestand/*
 factor_images/*
-.rapid_orthophoto_token
+.rapid_orthophoto_mark
 .pytest_cache/
