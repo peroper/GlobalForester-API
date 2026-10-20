@@ -38,8 +38,9 @@ try:
 except utils.ApiError as error:
     if error.code == 'changeSummaryNotAvailable':
         print(f'The change summary is gone after all: {error.detail}')
-        raise SystemExit(1)
-    raise
+    else:
+        print(f'Could not read the change summary: {error.code} - {error.detail}')
+    raise SystemExit(1)
 
 print(f"Completing {project['name']} would change the master plan as follows:\n")
 for kind in ('compartments', 'actions', 'factors'):

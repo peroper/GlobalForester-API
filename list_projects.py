@@ -42,3 +42,4 @@ try:
             print('\nNo more pages.')
 except utils.ApiError as error:
     print(f'Could not list projects: {error.code} - {error.detail}')
+    raise SystemExit(1)

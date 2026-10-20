@@ -47,3 +47,4 @@ try:
         print(line)
 except utils.ApiError as error:
     print(f'Could not list tasks: {error.code} - {error.detail}')
+    raise SystemExit(1)

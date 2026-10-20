@@ -32,8 +32,12 @@ if 'changeSummary' not in links:
     print('  (no changeSummary: this is not a Planuppdatering that is still being worked on)')
 
 print('\nTracklogs:')
-for tracklog in api.items('/v4/tracklogs', {'projectId': args.project_id}):
-    if tracklog.get('deleted'):
-        continue
-    print(f"  {tracklog['id']}  {tracklog.get('name')}  "
-          f"geometry={tracklog.get('geometry', {}).get('type')}")
+try:
+    for tracklog in api.items('/v4/tracklogs', {'projectId': args.project_id}):
+        if tracklog.get('deleted'):
+            continue
+        print(f"  {tracklog['id']}  {tracklog.get('name')}  "
+              f"geometry={tracklog.get('geometry', {}).get('type')}")
+except utils.ApiError as error:
+    print(f'Could not list the tracklogs: {error.code} - {error.detail}')
+    raise SystemExit(1)

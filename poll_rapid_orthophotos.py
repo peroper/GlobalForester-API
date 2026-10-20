@@ -4,7 +4,8 @@ V4 has no updatedAfter, and the page token cannot stand in for one: it names a p
 list you are reading, and the last page carries no token at all, so there is nothing to save for
 next time. Polling is therefore a full sweep of the list - token paging gets you through it - with
 the comparison done here, against the newest 'updated' the last run saw. This script keeps that
-mark in a small file so it can be run again and again.
+mark in a small file so it can be run again and again. A run for one Project keeps its own mark, so
+polling one Project never hides changes in another.
 
 Known gap: an orthophoto the app syncs late carries the 'updated' it had when the field worker saved
 it, which can be older than the mark, so comparing against the mark hides it for good. Ignore the
@@ -26,9 +27,14 @@ args = parser.parse_args()
 
 api = utils.client()
 
+# One mark per Project, and one for the sweep across all of them. A single shared mark would let a
+# run for one Project carry it past changes another Project has not been asked about yet, and those
+# would then never be reported.
+mark_file_path = f'{MARK_FILE}_{args.project_id}' if args.project_id else MARK_FILE
+
 mark = None
-if os.path.exists(MARK_FILE):
-    with open(MARK_FILE, 'r') as mark_file:
+if os.path.exists(mark_file_path):
+    with open(mark_file_path, 'r') as mark_file:
         mark = mark_file.read().strip() or None
 
 if args.report_all:
@@ -38,7 +44,9 @@ elif mark:
 else:
     print('No mark saved yet: reporting everything.')
 
-params = {}
+# Always asking for the deleted ones: a removed orthophoto is exactly the kind of change a poll
+# exists to catch, and the server leaves them out unless they are asked for.
+params = {'includeDeleted': 'true'}
 if args.project_id:
     params['projectId'] = args.project_id
 
@@ -67,7 +75,7 @@ except utils.ApiError as error:
     raise SystemExit(1)
 
 if newest:
-    with open(MARK_FILE, 'w') as mark_file:
+    with open(mark_file_path, 'w') as mark_file:
         mark_file.write(newest)
 
 print(f'\n{reported} changed of {swept} swept. '

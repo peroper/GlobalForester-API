@@ -31,25 +31,29 @@ except utils.ApiError as error:
     print(f'Could not list factors: {error.code} - {error.detail}')
     raise SystemExit(1)
 
-for factor in factors:
-    if factor.get('deleted'):
-        print(f"{factor['id']}  (deleted)")
-        continue
+try:
+    for factor in factors:
+        if factor.get('deleted'):
+            print(f"{factor['id']}  (deleted)")
+            continue
 
-    geometry = factor.get('geometry') or {}
-    print(f"{factor['id']}  type={factor.get('type')}  subType={factor.get('subType')}  "
-          f"name={factor.get('name')}  geometry={geometry.get('type')}")
-    if factor.get('note'):
-        print(f"  note: {factor['note']}")
+        geometry = factor.get('geometry') or {}
+        print(f"{factor['id']}  type={factor.get('type')}  subType={factor.get('subType')}  "
+              f"name={factor.get('name')}  geometry={geometry.get('type')}")
+        if factor.get('note'):
+            print(f"  note: {factor['note']}")
 
-    pictures = list(api.items('/v4/files', {'factorId': factor['id']}))
-    for picture in pictures:
-        print(f"  picture {picture['id']} ({picture.get('type')})")
+        pictures = list(api.items('/v4/files', {'factorId': factor['id']}))
+        for picture in pictures:
+            print(f"  picture {picture['id']} ({picture.get('type')})")
 
-        if args.download_images:
-            destination = api.download(
-                f"/v4/files/{picture['id']}",
-                f"factor_images/{factor['id']}_{picture['id']}.jpg")
-            print(f'    saved to {destination}')
+            if args.download_images:
+                destination = api.download(
+                    f"/v4/files/{picture['id']}",
+                    f"factor_images/{factor['id']}_{picture['id']}.jpg")
+                print(f'    saved to {destination}')
+except utils.ApiError as error:
+    print(f'Could not read the pictures: {error.code} - {error.detail}')
+    raise SystemExit(1)
 
 print(f'\n{len(factors)} factor(s) on task {args.task_id}.')
