@@ -94,6 +94,7 @@ python3 name_of_script.py -h
 | `get_project.py` | One Project, the links on it, and its Tracklogs |
 | `create_scout_project.py` | Creating a scout Project with an `idempotencyKey` |
 | `create_plan_update_project.py` | Creating a Planuppdatering, and the feature flag behind it |
+| `delete_project.py` | Deleting a Project and everything under it |
 | `get_change_summary.py` | What completing a Planuppdatering would change in the master plan |
 | `list_tasks.py` | Uppgifter per Arbetsgrupp, Project or person |
 | `get_task_factors.py` | An Uppgift's Påverkansfaktorer and their pictures |
@@ -160,7 +161,12 @@ Creating a Project and importing a plan both take an `idempotencyKey` — **as a
 as a field in the body**. Make up a key of your own, keep it, and if you never see an answer, ask
 again with the same key and the same body. You get the first answer back instead of a second Project
 or a second import. The key is yours alone and the API keeps the answer under it for 24 hours. A
-failure is remembered too, so a retry gets the same failure rather than a second attempt.
+failure is remembered too, so a retry gets the same failure rather than a second attempt — except
+when the write fell over before anything was stored at all, where the key is yours again and the
+same key starts a fresh attempt.
+
+For an import the key also covers the Arbetsgrupp. The same plan under the same key aimed at a
+different team is refused rather than imported, so one key cannot answer for two teams.
 
 Two different 409s can come back, and the `code` tells them apart because you act differently on
 each:
@@ -168,11 +174,28 @@ each:
 | `code` | What happened | What to do |
 | --- | --- | --- |
 | `idempotencyKeyInProgress` | The first call under this key has not answered yet | Wait a moment and ask again **with the same key** |
-| `idempotencyKeyReused` | The key is already used for a *different* body | Pick a **new** key |
+| `idempotencyKeyReused` | The key is already used for a *different* body, or — for an import — for the same plan into another Arbetsgrupp | Pick a **new** key |
 
 `utils.py` waits out the first one for you and raises the second, since only you can decide what the
-new call should be. An import is not one transaction, so after a failed import pick a new key rather
-than retrying the old one.
+new call should be.
+
+### When no answer comes back
+
+A timeout and a 504 are not the API saying no. They say nothing at all, and the work behind them
+goes on: an import is **not** stopped by the caller giving up, so it finishes and the answer waits
+under the key. Taking a new key there is the one thing that genuinely imports the plan twice.
+
+| What you saw | What to do |
+| --- | --- |
+| No answer, a read timeout, or 504 | Ask again **with the same key**. While the work runs you get 409 `idempotencyKeyInProgress`; once it is done that key hands you the answer |
+| 500 | The failure is remembered under the key. An import is not one transaction, so look at the Arbetsgrupp's Områden before sending the plan again, and take a **new** key when you do |
+
+`utils.py` does this for you. Every call carries a timeout — 10 seconds to connect and 180 to
+answer, which is as long as the gateway waits anyway — and a call that times out or comes back 504
+becomes a `utils.NoAnswer`, which is an `ApiError` like the rest. Under a key it is not raised
+straight away: the helper keeps asking with that same key for ten minutes, which is as long as a
+conversion may take on the server, and only then hands it to you. `import_forestand.py` then tells you to come back
+later with `--key`, because the answer is still there for 24 hours.
 
 ## When the server is busy: 429 and `Retry-After`
 

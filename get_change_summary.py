@@ -6,9 +6,9 @@ to read, so this script follows the link instead of guessing.
 
 The counting is literal, against the master plan. Splitting one stand into two shows as one stand
 removed and two created, and the treatments beneath them to match - never as one stand changed. The
-planning treatment that every Planuppdatering opens with always counts as one created treatment.
-Nothing is written and no history is kept, so the answer can differ from one call to the next as the
-field work goes on.
+planning treatment that every Planuppdatering opens with is left out of the counts, so a
+Planuppdatering nobody has worked on yet counts nothing at all. Nothing is written and no history is
+kept, so the answer can differ from one call to the next as the field work goes on.
 """
 
 import argparse
