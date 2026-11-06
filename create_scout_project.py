@@ -9,6 +9,10 @@ and the code tells them apart: idempotencyKeyInProgress means the first call has
 so wait and ask again under the same key - the helper does that for you. idempotencyKeyReused means
 the key is spoken for by a different body, which only a new key fixes.
 
+A failure is remembered under the key too, so asking again gets that same failure rather than a
+second attempt. The exception is a write that fell over before anything was stored: the key is then
+yours again and the same key starts a fresh attempt.
+
 Pass --key to reuse a key from an earlier run and watch the API answer with the stored answer, or
 refuse the key when the body differs.
 

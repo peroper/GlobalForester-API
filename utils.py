@@ -19,8 +19,16 @@ DEFAULT_RETRY_AFTER_SECONDS = 10
 # How many times a call is waited out and tried again before the caller is told about it.
 MAX_ATTEMPTS = 4
 
-# How long to wait before asking again under a key whose first call has not answered yet.
-IN_PROGRESS_WAIT_SECONDS = 2
+# How long to wait for an answer, as (connect, read). The gateway answers 504 after 180s, so
+# waiting longer than it does buys nothing; waiting forever, which is what requests does when it
+# is given no timeout, is the one thing a script must not do.
+REQUEST_TIMEOUT_SECONDS = (10, 180)
+
+# Asking again under a key whose call has not answered yet: how long between asks, and how long to
+# keep it up. An import is given ten minutes on the server, and the key is held a little longer
+# than that, so one still running after this is asked about later rather than waited out here.
+IN_PROGRESS_WAIT_SECONDS = 10
+IN_PROGRESS_BUDGET_SECONDS = 600
 
 
 def new_idempotency_key():
@@ -78,19 +86,37 @@ class ApiError(Exception):
         self.detail = self.problem.get('detail', '')
         self.retry_after = retry_after
 
-        super().__init__(f'{status_code} {self.code or ""} {self.detail}'.strip())
+        super().__init__(' '.join(str(part) for part in (status_code, self.code, self.detail) if part))
+
+
+class NoAnswer(ApiError):
+    """No answer came back: the read timed out, or a gateway gave up with 504.
+
+    Nothing is known about what happened at the other end, and an import goes on running there
+    whether or not anyone is still listening. A call made under an idempotencyKey is therefore
+    asked again with that same key; a new one would run the whole thing a second time.
+
+    It is an ApiError, so a script that handles those already handles this one too.
+    """
+
+    def __init__(self, status_code=None, detail=''):
+        super().__init__(status_code, {'detail': detail})
 
 
 class Api:
     """Talks to /v4. Every call goes through here, so the paging and the retries live in one place."""
 
     def __init__(self, host=None, token=None, session=None, sleep=time.sleep,
-                 max_attempts=MAX_ATTEMPTS):
+                 max_attempts=MAX_ATTEMPTS, timeout=REQUEST_TIMEOUT_SECONDS,
+                 in_progress_budget=IN_PROGRESS_BUDGET_SECONDS, now=time.monotonic):
         self.host = (host or HOST).rstrip('/')
         self.token = token
         self.session = session or requests.Session()
         self.sleep = sleep
         self.max_attempts = max_attempts
+        self.timeout = timeout
+        self.in_progress_budget = in_progress_budget
+        self.now = now
 
     def pages(self, path, params=None):
         """Yields one page at a time, following nextPageToken until it is absent.
@@ -116,6 +142,10 @@ class Api:
 
     def get(self, path, params=None):
         return self.request('GET', path, params=params).json()
+
+    def delete(self, path):
+        """Deletes something. The answer carries no body, so there is nothing to hand back."""
+        self.request('DELETE', path)
 
     def post_json(self, path, body, params=None):
         return self.request(
@@ -151,24 +181,36 @@ class Api:
     def retry_under_key(self, call, idempotency_key):
         """Makes a call under an idempotencyKey, which travels as a query parameter.
 
-        Two different 409s can come back and the code tells them apart: idempotencyKeyInProgress
-        means the first call has not answered yet, so wait and ask again under the same key, while
-        idempotencyKeyReused means the key is spoken for by a different body, which only a new key
-        fixes.
+        Three answers mean the call may still be running, and all three are met the same way: ask
+        again with the same key. 409 idempotencyKeyInProgress says so outright; a 504 and a call
+        that never answered say nothing at all, and the work behind them carries on regardless.
+        Asking is kept up for IN_PROGRESS_BUDGET_SECONDS rather than for a few attempts, because
+        an import takes minutes rather than seconds.
+
+        409 idempotencyKeyReused is the one that is not retried: the key is spoken for by a
+        different request, and only a new key fixes that.
         """
         params = {'idempotencyKey': idempotency_key} if idempotency_key else {}
+        if not idempotency_key:
+            return call(params)
 
-        for attempt in range(1, self.max_attempts + 1):
+        giving_up_at = self.now() + self.in_progress_budget
+
+        while True:
             try:
                 return call(params)
             except ApiError as error:
-                if error.code != 'idempotencyKeyInProgress' or attempt == self.max_attempts:
+                if not self.may_still_be_running(error) or self.now() >= giving_up_at:
                     raise
 
-                print(f'The first call under this key has not answered yet. Waiting '
-                      f'{IN_PROGRESS_WAIT_SECONDS}s and asking again under the same key '
-                      f'(attempt {attempt} of {self.max_attempts}).')
+                print(f'No answer yet under this key ({error}). Waiting '
+                      f'{IN_PROGRESS_WAIT_SECONDS}s and asking again with the same key.')
                 self.sleep(IN_PROGRESS_WAIT_SECONDS)
+
+    @staticmethod
+    def may_still_be_running(error):
+        """Whether the call behind this error may be going on at the other end."""
+        return isinstance(error, NoAnswer) or error.code == 'idempotencyKeyInProgress'
 
     def download(self, path, destination, params=None):
         """Writes a download to a file in chunks, so a whole plan or picture is never held in memory."""
@@ -189,18 +231,29 @@ class Api:
         """Makes one call, waiting out a 429 for the seconds Retry-After asks for.
 
         Only a 429 is retried: it means the server is busy, and the one thing to do about it is to
-        wait and ask again. Every other error is the caller's to deal with.
+        wait and ask again. Every other error is the caller's to deal with, and a call that never
+        answered becomes a NoAnswer rather than a requests exception.
         """
         for attempt in range(1, self.max_attempts + 1):
             if body_factory is not None:
                 kwargs['data'] = body_factory()
 
-            response = self.session.request(
-                method,
-                f'{self.host}{path}',
-                params=params,
-                headers={'Authorization': f'Bearer {self.token}', **(headers or {})},
-                **kwargs)
+            try:
+                response = self.session.request(
+                    method,
+                    f'{self.host}{path}',
+                    params=params,
+                    headers={'Authorization': f'Bearer {self.token}', **(headers or {})},
+                    timeout=self.timeout,
+                    **kwargs)
+            except (requests.Timeout, requests.ConnectionError) as broke_off:
+                raise NoAnswer(
+                    detail=f'No answer within {self.timeout[1]}s: {broke_off}') from broke_off
+
+            # A gateway that gave up is not the API saying no. What it was waiting for may well
+            # have gone through, which is what makes this different from every other error here.
+            if response.status_code == 504:
+                raise NoAnswer(504, 'A gateway gave up waiting for the answer.')
 
             if response.status_code < 400:
                 return response

@@ -56,6 +56,14 @@ def test_a_retry_after_that_is_not_a_number_of_seconds_falls_back_to_a_wait_of_o
     assert slept == [utils.DEFAULT_RETRY_AFTER_SECONDS]
 
 
+def test_every_call_carries_a_timeout_so_a_script_cannot_hang_on_one():
+    client, _ = api(FakeResponse(body={'results': []}))
+
+    client.get('/v4/projects', {'teamId': 'team-1'})
+
+    assert client.session.calls[0]['timeout'] == utils.REQUEST_TIMEOUT_SECONDS
+
+
 def test_an_error_that_is_not_a_429_is_not_retried():
     client, slept = api(FakeResponse(status_code=404, body={'status': 404, 'code': 'teamNotFound'}))
 

@@ -31,4 +31,24 @@ class FakeSession:
         self.calls.append({'method': method, 'url': url, **kwargs})
         if not self.responses:
             raise AssertionError(f'No response scripted for {method} {url}')
-        return self.responses.pop(0)
+
+        answer = self.responses.pop(0)
+        if isinstance(answer, Exception):
+            raise answer
+
+        return answer
+
+
+class FakeClock:
+    """A clock that only moves when something sleeps, so a test can run a budget out at once."""
+
+    def __init__(self):
+        self.slept = []
+        self.time = 0.0
+
+    def __call__(self):
+        return self.time
+
+    def sleep(self, seconds):
+        self.slept.append(seconds)
+        self.time += seconds
